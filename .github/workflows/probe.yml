@@ -1,0 +1,49 @@
+name: Probe
+
+# Cheap checks of the public sources (CMF, Superintendencia de Pensiones, CNMV): what each one
+# returns, in what format and how far back. Findings are printed as annotations; raw samples and
+# JSON summaries are force-pushed to the probe-results branch, which holds only the latest run.
+on:
+  push:
+    paths:
+      - "src/boards/probe.py"
+      - ".github/workflows/probe.yml"
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Probes to run (empty = all): cl_universe cl_tabs cl_pensions es_index es_iagc"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: probe
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install --no-cache-dir .
+      - name: Run probes
+        env:
+          ONLY: ${{ inputs.only }}
+        run: boards-probe --out probes ${ONLY:+--only $ONLY}
+      - name: Publish results to the probe-results branch
+        if: always()
+        run: |
+          cd probes
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q -b probe-results
+          git add -A
+          git commit -qm "Probe results for ${GITHUB_SHA::7}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" probe-results
