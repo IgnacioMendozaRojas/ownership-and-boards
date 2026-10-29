@@ -19,17 +19,20 @@ from .figstyle import charts, picture
 ROOT = Path(".")
 OUT = ROOT / "data" / "processed"
 FIG = ROOT / "docs" / "figures"
-CL_SOURCE = "Source: CMF company pages (12 largest shareholders, December of each year)."
-ES_SOURCE = "Source: CNMV annual corporate governance reports (IAGC), sections A.2 and C.1."
+REPO = "github.com/IgnacioMendozaRojas/ownership-and-boards"
+CL_SOURCE = f"Source: CMF company pages (12 largest shareholders, December of each year). {REPO}"
+ES_SOURCE = f"Source: CNMV annual corporate governance reports (IAGC), sections A.2 and C.1. {REPO}"
 MIN_BOARD = 5
 OWNER_LABEL = {
-    "nonprofit": "foundation",
-    "state": "state",
-    "family": "family",
-    "institutional": "institutional investor",
-    "bank": "bank",
-    "corporate": "corporation",
-    "state_foreign": "foreign state",
+    "nonprofit": "Foundation",
+    "state": "State",
+    "family": "Family",
+    "institutional": "Institutional investor",
+    "bank": "Bank",
+    "corporate": "Corporation",
+    "state_foreign": "Foreign state",
+    "individual": "Individual",
+    "other": "Other",
 }  # board registers below this size are incomplete in the CMF data
 
 
@@ -72,8 +75,10 @@ def fig_concentration(cl: pd.DataFrame) -> str:
 
 
 def fig_representation(es: pd.DataFrame) -> str:
-    last = es.sort_values("year").groupby("nif").tail(1).dropna(subset=["top1_pct"])
-    year = int(last["year"].max())
+    year = int(es["year"].max())
+    now = es[es["year"] == year]
+    last = now[now["holders_complete"]]
+    left_out = sorted(now.loc[~now["holders_complete"], "firm"])
     gap = last.assign(gap=last["top1_pct"] / 100 - last["dom_share"]).sort_values("gap")
     top = gap.iloc[-1]
     title = (
@@ -81,12 +86,22 @@ def fig_representation(es: pd.DataFrame) -> str:
         f"but {top['dom_share']:.0%} of seats as dominicales"
     )
     sub = (
-        f"{len(last)} IBEX firms, {year}: largest holder's votes vs. seats held by dominical "
-        "directors (dashed: one to one)"
+        f"{len(last)} of {len(now)} IBEX firms in {year}: largest owner's votes vs. dominical seats"
     )
+    if left_out:
+        sub += f" ({', '.join(left_out)} left out: holdings table not read in full)"
     for c in charts(title, sub, ES_SOURCE, size=(9, 5.2)):
         ax = c.ax
         ax.plot([0, 1], [0, 1], color=c.t["muted"], linewidth=0.8, linestyle=(0, (2, 2)))
+        ax.text(
+            0.62,
+            0.66,
+            "Seats in proportion to votes",
+            color=c.t["muted"],
+            fontsize=8,
+            rotation=33,
+            rotation_mode="anchor",
+        )
         kind = last["top1_type"].fillna("other").map(lambda t: OWNER_LABEL.get(t, t))
         for i, t in enumerate(sorted(kind.unique())):
             d = last[kind == t]
@@ -114,7 +129,7 @@ def fig_representation(es: pd.DataFrame) -> str:
         from matplotlib.ticker import PercentFormatter
 
         ax.xaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
-        c.xlabel("Largest holder's voting stake")
+        c.xlabel("Largest owner's voting stake")
         ax.set_ylabel("Dominical directors / board", color=c.t["muted"], fontsize=9)
         c.legend(loc="upper left")
         c.save(FIG, "representation")

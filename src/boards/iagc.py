@@ -136,6 +136,11 @@ def parse_section(lines: list[dict]) -> list[dict]:
             anchors.append({"i": i, "x_num": nums[0][0], "total": pct(nums[-1][3]), "name": []})
     if not anchors:
         return []
+    # Table rows start their numbers in the numeric columns; a footnote that quotes a
+    # percentage starts its numbers at the left margin, so it is not a row.
+    xs = sorted(a["x_num"] for a in anchors)
+    column = xs[len(xs) // 2]
+    anchors = [a for a in anchors if a["x_num"] >= column - 60]
     limit = min(a["x_num"] for a in anchors) - 2
     first = anchors[0]["i"]
     frag = {}
@@ -161,6 +166,23 @@ def parse_section(lines: list[dict]) -> list[dict]:
         else:
             parts += below_last
         a["name"] = [frag[i] for i in sorted(parts) if i in frag]
+        a["parts"] = sorted(i for i in parts if i in frag)
+    # A row of percentages with no name line at all has lost its name to a neighbour that
+    # already has its own: give it back the wrapped lines between the two rows.
+    for k, a in enumerate(anchors):
+        if a["parts"]:
+            continue
+        for nb in (anchors[k - 1] if k else None, anchors[k + 1] if k + 1 < len(anchors) else None):
+            if nb is None or nb["i"] not in nb["parts"]:
+                continue
+            lo, hi = sorted((nb["i"], a["i"]))
+            moved = [i for i in nb["parts"] if lo < i < hi]
+            if moved:
+                nb["parts"] = [i for i in nb["parts"] if i not in moved]
+                nb["name"] = [frag[i] for i in nb["parts"]]
+                a["parts"] = moved
+                a["name"] = [frag[i] for i in moved]
+                break
     # Matching runs in two passes. First, a row whose assembled name holds exactly one known
     # holder takes it. Then the remaining rows (no known name, or two names mixed by wrapping)
     # take the holder from an order-preserving alignment of name lines with rows. Rows left
@@ -183,7 +205,8 @@ def parse_section(lines: list[dict]) -> list[dict]:
     for k, a in enumerate(anchors):
         raw = re.sub(r"\s+", " ", " ".join(a["name"])).strip(" ,")
         words = raw.split()
-        prose = len(words) >= 2 and sum(w[:1].islower() for w in words) >= len(words) / 2
+        lower = sum(w[:1].islower() for w in words)
+        prose = (len(words) >= 2 and lower >= len(words) / 2) or (len(words) > 10 and lower >= 3)
         if k in chosen and chosen[k] not in used:
             h = known[chosen[k]]
             used.add(chosen[k])
@@ -219,6 +242,15 @@ def align(anchors: list[int], hits: list[tuple[int, int]], reach: int = 4) -> di
         else:
             j -= 1
     return out
+
+
+def firm_names() -> dict[str, str]:
+    path = Path(__file__).resolve().parents[2] / "config" / "pilot.yaml"
+    if not path.exists():
+        path = Path("config") / "pilot.yaml"
+    if not path.exists():
+        return {}
+    return {str(k): v for k, v in yaml.safe_load(path.read_text())["spain"]["firms"].items()}
 
 
 _KNOWN: list[dict] | None = None
@@ -268,6 +300,11 @@ def build(cache: Path) -> dict[str, pd.DataFrame]:
         reports.append(r)
     rep = pd.DataFrame(reports)
     hold = pd.DataFrame(holders)
+    # display names come from the sample configuration (with accents), not from the cache
+    names = firm_names()
+    rep["firm"] = rep["nif"].map(names).fillna(rep["firm"])
+    if not hold.empty:
+        hold["firm"] = hold["nif"].map(names).fillna(hold["firm"])
     if not hold.empty:
         guess = hold["holder"].map(lambda n: owner_type(n, country="es"))
         hold["matched"] = hold["type"].notna()
@@ -289,4 +326,10 @@ def build(cache: Path) -> dict[str, pd.DataFrame]:
             n_sig=("pct", "size"),
         ).reset_index()
         rep = rep.merge(top, on=["nif", "year"], how="left")
+        # a year's holdings table counts as read in full when every row matched a known holder
+        unmatched = hold.groupby(["nif", "year"])["matched"].apply(lambda m: (~m).sum())
+        rep = rep.merge(
+            unmatched.rename("n_unmatched").reset_index(), on=["nif", "year"], how="left"
+        )
+        rep["holders_complete"] = rep["n_sig"].notna() & (rep["n_unmatched"] == 0)
     return {"reports": rep, "holders": hold}

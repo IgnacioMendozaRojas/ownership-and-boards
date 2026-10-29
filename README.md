@@ -10,19 +10,19 @@
 ## Results
 
 - **Chilean ownership became more concentrated and less contestable.** Across 30 large listed firms, the largest shareholder's median stake rose from 35% in 2010 to 40% in 2025, the second holder's stake fell from 0.42 to 0.33 of the first's, and the median number of shareholders fell by 30% (1,528 to 1,063). In 2025, 16 of the 30 firms had no blockholder (5% or more) other than corporate vehicles.
-- **Controllers reach the Spanish board through different doors.** Fundación Mapfre holds 70% of Mapfre's votes but 1 of its 15 seats as a dominical director (the board has 5 executives); the Entrecanales family holds 56% of Acciona through two companies and 2 of 12 dominical seats. Where no owner controls, the owners split the board: Naturgy's five significant holders (none above 26%) held 11 of its 15 seats in 2025. Counting only dominical directors understates a controller's presence when it governs through executives.
+- **Controllers reach the Spanish board through different doors.** Fundación Mapfre holds 70% of Mapfre's votes but 1 of its 15 seats as a dominical director (the board has 5 executives); the Entrecanales family holds 56% of Acciona through two companies and 2 of 12 dominical seats. Where no owner controls, the owners split the board: Naturgy's six significant holders (none above 26%) held 11 of its 15 seats in 2025. Counting only dominical directors understates a controller's presence when it governs through executives.
 - **Independence rose, and a disclosure meant to measure representation is reported inconsistently.** Independents went from 45% to 53% of the board in seven IBEX firms (2015-2025). The share of voting rights "represented on the board", reported since 2021, moved at Acciona from 1% (2021-22) to 56% (2023) with the same owners, so it cannot be used without checking it against the shareholdings.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/figures/representation-dark.png">
-  <img alt="Largest holder's voting stake against the share of board seats held by dominical directors in six IBEX firms in 2025: Mapfre's foundation holds 70% of votes and 7% of seats; Naturgy's investors hold 26% at most and 73% of seats" src="docs/figures/representation-light.png">
+  <img alt="Largest owner's voting stake against the share of board seats held by dominical directors in six of seven IBEX firms in 2025: Mapfre's foundation holds 70% of votes and 7% of seats; Naturgy's investors hold 26% at most and 73% of seats" src="docs/figures/representation-light.png">
 </picture>
 
 ## What this shows
 
 | Research task | Where it is done here |
 |---|---|
-| Find which public sources can be downloaded in a structured way | Five rounds of cheap probes in GitHub Actions, results as annotations ([`probe.py`](src/boards/probe.py)) |
+| Find which public sources can be downloaded in a structured way | Five rounds of cheap probes in GitHub Actions, results read as annotations; the probes were removed once the sources were settled (see the commit history) |
 | Build a firm-year panel from regulatory filings | CMF company pages: 12 largest shareholders, number of shareholders and director spells with start and end dates ([`cmf.py`](src/boards/cmf.py)); CNMV governance reports cached as text and word positions ([`cnmv.py`](src/boards/cnmv.py)) |
 | Read tables out of PDF reports | Board counts from the model's summary lines; significant holdings read from word positions, with name lines balanced around each row of percentages and aligned with known holders ([`iagc.py`](src/boards/iagc.py)) |
 | Classify owners transparently | Ordered rules on holder names, tested on real names, plus a reviewed list of significant holders with family vehicles grouped by family ([`owners.py`](src/boards/owners.py), [`holders_es.yaml`](config/holders_es.yaml)) |
@@ -66,9 +66,9 @@ Three hypotheses guide the next step, not yet tested: the controller's over-repr
 ## Validation
 
 - Figures checked against the filings: ENAIRE's 51% of Aena and Copec's 60.82% held by AntarChile, both as reported.
-- 95% of the Spanish significant holders are matched to a reviewed holder; the rest keep their raw name and are flagged in [`holders_es.csv`](data/processed/holders_es.csv).
+- 95% of the Spanish significant holders are matched to a reviewed holder; the rest keep their raw name and are flagged in [`holders_es.csv`](data/processed/holders_es.csv). A firm-year counts as read in full only when every row of its holdings table is matched; the representation chart shows only those, and its subtitle names any firm left out (Grifols in 2025, whose table runs over a page break and misses a holding reported in a footnote).
 - The CMF director register is incomplete for some firm-years (LATAM, Enel Chile and SQM list fewer directors than they have); board measures use only firm-years with at least 5 directors (`board_complete`).
-- 40 offline tests cover the parsers and the owner rules; `ruff` and `pytest` run on every push.
+- 34 offline tests cover the parsers and the owner rules; `ruff` and `pytest` run on every push.
 
 **Limitations of the pilot.** Small samples (30 and 7 firms). In Chile, who each director represents is not declared, so representation must be inferred (shared directors, AFP-elected directors); custodian accounts hide part of the ownership. Five Spanish firms are missing because their CNMV identifier did not resolve. Holder names in the most irregular Spanish tables (Naturgy 2019-2024) are partly unmatched.
 
