@@ -21,6 +21,11 @@ import requests
 from bs4 import BeautifulSoup
 
 UA = "Mozilla/5.0 (X11; Linux x86_64) ownership-and-boards research probe"
+# The CNMV drops requests from non-browser user agents (rounds 2 and 4 got no response at all)
+BROWSER_UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/128.0 Safari/537.36"
+)
 CMF = "https://www.cmfchile.cl/institucional/mercados"
 CNMV = "https://www.cnmv.es/portal/consultas/ee/informaciongobcorp"
 
@@ -604,6 +609,8 @@ def probe_cl_pension_zip(f: Fetcher, out: Path) -> dict:
     )
     r = f.get(url)
     zips = find_links(r.text, url, r"\.zip") if r is not None else []
+    if not zips:  # the 2005 page linked cinv200512.zip; try the same pattern
+        zips = [{"href": "https://www.spensiones.cl/apps/loadCarteras/cinv202512.zip"}]
     res: dict = {"source": "SP disaggregated portfolio", "zip_links": [z["href"] for z in zips]}
     if zips:
         rz = f.get(zips[0]["href"])
@@ -630,6 +637,8 @@ def probe_cl_pension_zip(f: Fetcher, out: Path) -> dict:
 def probe_es_universe(f: Fetcher, out: Path) -> dict:
     """Candidate lists of Spanish listed companies with their NIF."""
     res: dict = {"source": "CNMV universe"}
+    f = Fetcher(pause=3)
+    f.s.headers.update({"User-Agent": BROWSER_UA, "Accept-Language": "es-ES,es;q=0.9"})
     urls = {
         "iagc_report_2025": (
             "https://www.cnmv.es/DocPortal/Publicaciones/Informes/CNMV_IAGC_2025_DEF.pdf"
@@ -660,7 +669,7 @@ def probe_es_universe(f: Fetcher, out: Path) -> dict:
 
 # --- runner -------------------------------------------------------------------------------------
 
-LATEST = ["cl_board_pdf", "cl_pension_zip", "es_universe"]
+LATEST = ["cl_pension_zip", "es_universe"]
 
 
 def main(argv: list[str] | None = None) -> int:
