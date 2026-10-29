@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import re
 from pathlib import Path
 
@@ -12,7 +13,8 @@ import yaml
 from . import cmf, cnmv
 from .web import BudgetSpent, Web
 
-ROOT = Path(__file__).resolve().parents[2]
+# Paths are relative to the repository checkout (the working directory), not the installed package
+ROOT = Path(os.environ.get("BOARDS_ROOT", "."))
 CONFIG = ROOT / "config" / "pilot.yaml"
 RAW = ROOT / "data" / "raw"
 CACHE = ROOT / "data" / "cache" / "iagc"
