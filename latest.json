@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "id": "ownership-and-boards",
+  "repo": "ownership-and-boards",
+  "title": "Ownership constellations and board seats in Chile and Spain",
+  "question": "How do combinations of owners translate into board seats in two markets with concentrated ownership?",
+  "as_of": "2025",
+  "frequency": "annual",
+  "updated": "2026-10-29",
+  "source": "CMF company pages (Chile); CNMV annual corporate governance reports (Spain)",
+  "headline": "In 2025 the largest shareholder of a large Chilean listed firm held a median 40% (against 35% in 2010); in Spain, independents held 53% of board seats and dominicales 28% in 2025.",
+  "metrics": [
+    {
+      "id": "cl_top1_median",
+      "label": "Chile: largest holder's stake, median",
+      "value": 39.53,
+      "unit": "%",
+      "period": "2025",
+      "previous": 34.6,
+      "change": 4.93,
+      "change_type": "absolute"
+    },
+    {
+      "id": "cl_contest_median",
+      "label": "Chile: 2nd / 1st holder, median",
+      "value": 0.3272,
+      "unit": "ratio",
+      "period": "2025",
+      "previous": 0.4174,
+      "change": -0.0902,
+      "change_type": "absolute"
+    },
+    {
+      "id": "cl_holders_median",
+      "label": "Chile: number of shareholders, median",
+      "value": 1062.5,
+      "unit": "holders",
+      "period": "2025",
+      "previous": 1527.5,
+      "change": -465.0,
+      "change_type": "absolute"
+    },
+    {
+      "id": "es_ind_share",
+      "label": "Spain: independent directors, average share",
+      "value": 0.5286,
+      "unit": "share",
+      "period": "2025",
+      "previous": 0.4479,
+      "change": 0.0807,
+      "change_type": "absolute"
+    },
+    {
+      "id": "es_dom_share",
+      "label": "Spain: dominical directors, average share",
+      "value": 0.281,
+      "unit": "share",
+      "period": "2025",
+      "previous": 0.3132,
+      "change": -0.0323,
+      "change_type": "absolute"
+    }
+  ],
+  "baseline": "Chile 2010, Spain 2015",
+  "sample": "30 Chilean and 7 Spanish listed firms (pilot)"
+}

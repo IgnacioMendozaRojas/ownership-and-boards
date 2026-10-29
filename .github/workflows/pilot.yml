@@ -46,3 +46,35 @@ jobs:
             sleep $((i * 10))
           done
           exit 1
+
+  report:
+    needs: fetch
+    if: always()
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pilot-report
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install --no-cache-dir .
+      - name: Rebuild panels, figures and the latest reading
+        run: |
+          git pull -q origin main
+          boards report
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/processed docs/figures latest.json README.md
+          git diff --cached --quiet && exit 0
+          git commit -qm "Report: panels, figures and latest reading"
+          for i in 1 2 3 4 5; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep $((i * 10))
+          done
+          exit 1

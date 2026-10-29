@@ -140,9 +140,14 @@ def fetch_es(web: Web, cfg: dict) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="boards")
-    ap.add_argument("command", choices=["fetch-cl", "fetch-es"])
+    ap.add_argument("command", choices=["fetch-cl", "fetch-es", "report"])
     ap.add_argument("--budget", type=int, default=2500, help="max requests this run")
     args = ap.parse_args(argv)
+    if args.command == "report":
+        from . import report
+
+        report.main()
+        return 0
     cfg = yaml.safe_load(CONFIG.read_text())
     web = Web(pause=1.0 if args.command == "fetch-cl" else 3.0, budget=args.budget)
     try:

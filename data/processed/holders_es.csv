@@ -1,0 +1,248 @@
+nif,firm,year,holder,type,pct,raw,matched,owner
+A08001851,Acciona,2015,Wit Europese Investering (Entrecanales),family,28.04,WIT EUROPESE INVESTERING B.V.,True,Entrecanales family
+A08001851,Acciona,2015,Tussen de Grachten (Entrecanales),family,27.69,"TUSSEN DE GRACHTEN, BV",True,Entrecanales family
+A08001851,Acciona,2015,Capital Group,institutional,4.07,CAPITAL RESEARCH AND MANAGEMENT COMPANY,True,Capital Group
+A08001851,Acciona,2016,Capital Group,institutional,4.07,CAPITAL RESEARCH AND MANAGEMENT COMPANY,True,Capital Group
+A08001851,Acciona,2016,Wit Europese Investering (Entrecanales),family,28.23,WIT EUROPESE INVESTERING B.V.,True,Entrecanales family
+A08001851,Acciona,2016,Tussen de Grachten (Entrecanales),family,27.8,"TUSSEN DE GRACHTEN, BV",True,Entrecanales family
+A08001851,Acciona,2017,Wit Europese Investering (Entrecanales),family,28.39,"WIT EUROPESE INVESTERING, BV",True,Entrecanales family
+A08001851,Acciona,2017,Tussen de Grachten (Entrecanales),family,27.8,"TUSSEN DE GRACHTEN, BV",True,Entrecanales family
+A08001851,Acciona,2018,La Verdosa (Entrecanales),family,5.54,"LA VERDOSA, S.L.",True,Entrecanales family
+A08001851,Acciona,2018,Wit Europese Investering (Entrecanales),family,25.01,"WIT EUROPESE INVESTERING, BV",True,Entrecanales family
+A08001851,Acciona,2018,Tussen de Grachten (Entrecanales),family,27.8,"TUSSEN DE GRACHTEN, BV",True,Entrecanales family
+A08001851,Acciona,2019,La Verdosa (Entrecanales),family,5.78,"LA VERDOSA, S.L.",True,Entrecanales family
+A08001851,Acciona,2019,Wit Europese Investering (Entrecanales),family,26.1,"WIT EUROPESE INVESTERING, BV",True,Entrecanales family
+A08001851,Acciona,2019,Tussen de Grachten (Entrecanales),family,29.02,"TUSSEN DE GRACHTEN, BV",True,Entrecanales family
+A08001851,Acciona,2020,Wit Europese Investering (Entrecanales),family,26.1,"WIT EUROPESE INVESTERING, BV",True,Entrecanales family
+A08001851,Acciona,2020,Tussen de Grachten (Entrecanales),family,29.02,"TUSSEN DE GRACHTEN, BV",True,Entrecanales family
+A08001851,Acciona,2020,Invesco,institutional,1.04,INVESCO LIMITED,True,Invesco
+A08001851,Acciona,2021,Wit Europese Investering (Entrecanales),family,26.1,"WIT EUROPESE INVESTERING, BV",True,Entrecanales family
+A08001851,Acciona,2021,Tussen de Grachten (Entrecanales),family,29.02,"TUSSEN DE GRACHTEN, BV",True,Entrecanales family
+A08001851,Acciona,2022,Wit Europese Investering (Entrecanales),family,26.1,"A. ESTRUCTURA DE LA PROPIEDAD WIT EUROPESE INVESTERING, BV",True,Entrecanales family
+A08001851,Acciona,2022,Tussen de Grachten (Entrecanales),family,29.02,"A.1 Complete el siguiente cuadro sobre el capital social y los derechos de voto atribuidos, incluidos, en su caso, los correspondientes TUSSEN DE GRACHTEN, BV a las acciones con voto por lealtad, a la fecha de cierre del ejercicio:",True,Entrecanales family
+A08001851,Acciona,2022,BlackRock,institutional,3.02,"BLACKROCK, INC",True,BlackRock
+A08001851,Acciona,2023,Wit Europese Investering (Entrecanales),family,26.1,"WIT EUROPESE INVESTERING, BV",True,Entrecanales family
+A08001851,Acciona,2023,Tussen de Grachten (Entrecanales),family,29.02,"TUSSEN DE GRACHTEN, BV",True,Entrecanales family
+A08001851,Acciona,2023,BlackRock,institutional,3.22,"BLACKROCK, INC",True,BlackRock
+A08001851,Acciona,2024,Wit Europese Investering (Entrecanales),family,26.1,Wit Europesse,True,Entrecanales family
+A08001851,Acciona,2024,Tussen de Grachten (Entrecanales),family,29.02,"Investering, BV Tussen De Grachten, BV",True,Entrecanales family
+A08001851,Acciona,2024,BlackRock,institutional,3.689,"Blackrock, Inc",True,BlackRock
+A08001851,Acciona,2025,Wit Europese Investering (Entrecanales),family,26.83,"WIT EUROPESE INVESTERING, BV",True,Entrecanales family
+A08001851,Acciona,2025,Tussen de Grachten (Entrecanales),family,29.02,"TUSSEN DE GRACHTEN, BV",True,Entrecanales family
+A08001851,Acciona,2025,BlackRock,institutional,3.89,"BLACKROCK, INC",True,BlackRock
+A08015497,Naturgy,2015,Sonatrach,state_foreign,4.01,"SOCIÉTÉ NATIONALE POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCI",True,Sonatrach
+A08015497,Naturgy,2015,Repsol,corporate,30.0,"REPSOL, S.A.",True,Repsol
+A08015497,Naturgy,2015,Fundación La Caixa (Criteria),nonprofit,34.44,FUNDACION BANCARIA CAIXA D´ESTALVIS I PENSIONS DE BARCELONA (LA CAIXA),True,Fundación La Caixa (Criteria)
+A08015497,Naturgy,2016,Sonatrach,state_foreign,4.01,"SOCIÉTÉ NATIONALE POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCI",True,Sonatrach
+A08015497,Naturgy,2016,Repsol,corporate,20.08,"REPSOL, S.A.",True,Repsol
+A08015497,Naturgy,2016,GIP,institutional,20.0,GLOBAL INFRASTRUCTURE PARTNERS III,True,GIP
+A08015497,Naturgy,2016,Fundación La Caixa (Criteria),nonprofit,24.44,FUNDACION BANCARIA CAIXA D´ESTALVIS I PENSIONS DE BARCELONA (LA CAIXA),True,Fundación La Caixa (Criteria)
+A08015497,Naturgy,2017,GIP,institutional,20.0,GLOBAL INFRASTRUCTURE PARTNERS III,True,GIP
+A08015497,Naturgy,2017,Sonatrach,state_foreign,4.01,"SOCIÉTÉ NATIONALE POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCI",True,Sonatrach
+A08015497,Naturgy,2017,Repsol,corporate,20.08,"REPSOL, S.A.",True,Repsol
+A08015497,Naturgy,2017,Fundación La Caixa (Criteria),nonprofit,24.44,FUNDACION BANCARIA CAIXA D´ESTALVIS I PENSIONS DE BARCELONA (LA CAIXA),True,Fundación La Caixa (Criteria)
+A08015497,Naturgy,2018,GIP,institutional,20.0,GLOBAL INFRASTRUCTURE MANAGEMENT LLP,True,GIP
+A08015497,Naturgy,2018,Sonatrach,state_foreign,3.85,"SOCIÉTÉ NACIONALE POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCIALISATION DES HYDROCARBURES",True,Sonatrach
+A08015497,Naturgy,2018,Fundación La Caixa (Criteria),nonprofit,25.652,CRITERIA CAIXA S.A. U,True,Fundación La Caixa (Criteria)
+A08015497,Naturgy,2018,CVC,institutional,20.072,CVC Capital Partners SICAV-FIS S.A.,True,CVC
+A08015497,Naturgy,2019,GLOBAL INFRASTRUCTURE MANAGEMENT LLP SOCIÉTÉ NACIONALE,individual,20.336,GLOBAL INFRASTRUCTURE MANAGEMENT LLP SOCIÉTÉ NACIONALE,False,GLOBAL INFRASTRUCTURE MANAGEMENT LLP SOCIÉTÉ NACIONALE
+A08015497,Naturgy,2019,Sonatrach,state_foreign,4.1,"POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCIALISATION",True,Sonatrach
+A08015497,Naturgy,2019,DES HYDROCARBURES FUNDACION BANCARIA CAIXA D’ESTALVIS i PENSIONS DE BARCELONA (LA CAIXA) CVC Capital Partners,nonprofit,24.424,DES HYDROCARBURES FUNDACION BANCARIA CAIXA D’ESTALVIS i PENSIONS DE BARCELONA (LA CAIXA) CVC Capital Partners,False,DES HYDROCARBURES FUNDACION BANCARIA CAIXA D’ESTALVIS i PENSIONS DE BARCELONA (LA CAIXA) CVC Capital Partners
+A08015497,Naturgy,2019,CVC,institutional,20.41,,True,CVC
+A08015497,Naturgy,2019,Capital Group,institutional,3.03,SICAV-FIS S.A. CAPITAL RESEARCH AND MANAGEMENT COMPANY 1 Según información sobre,True,Capital Group
+A08015497,Naturgy,2020,GIP,institutional,20.6,GLOBAL INFRASTRUCTURE MANAGEMENT LLP,True,GIP
+A08015497,Naturgy,2020,Sonatrach,state_foreign,4.1,"SOCIÉTÉ NACIONALE POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCIALISATION DES HYDROCARBURES",True,Sonatrach
+A08015497,Naturgy,2020,Fundación La Caixa (Criteria),nonprofit,24.8,FUNDACION BANCARIA CAIXA D’ESTALVIS i PENSIONS DE BARCELONA (LA CAIXA),True,Fundación La Caixa (Criteria)
+A08015497,Naturgy,2020,CVC,institutional,20.7,CVC Capital Partners SICAV-FIS S.A.,True,CVC
+A08015497,Naturgy,2021,GIP,institutional,20.6,GLOBAL INFRASTRUCTURE,True,GIP
+A08015497,Naturgy,2021,Sonatrach,state_foreign,4.1,"PARTNER III SOCIÉTÉ NACIONALE POUR LA RECHERCHE, LA PRODUCTION, LE",True,Sonatrach
+A08015497,Naturgy,2021,Fundación La Caixa (Criteria),nonprofit,26.7,"TRANSPORT, LA TRANSFORMATION ET LA COMMERCIALISATION DES FU N D A C I O N B ANCARIA H Y D R O C A R B URES CAIXA D’ESTALVIS i PENSIONS DE BARCELONA",True,Fundación La Caixa (Criteria)
+A08015497,Naturgy,2021,( L A C A IX A ) C V C C a p it a l Partners SICAV- FIS S.A.,corporate,20.7,( L A C A IX A ) C V C C a p it a l Partners SICAV- FIS S.A.,False,( L A C A IX A ) C V C C a p it a l Partners SICAV- FIS S.A.
+A08015497,Naturgy,2021,IFM,institutional,12.15,IFM GLOBAL,True,IFM
+A08015497,Naturgy,2021,INFRAESTRUCTURES FUND.,institutional,12.15,INFRAESTRUCTURES FUND.,False,INFRAESTRUCTURES FUND.
+A08015497,Naturgy,2022,GIP,institutional,20.6,GLOBAL INFRASTRUCTURE PARTNERS III,True,GIP
+A08015497,Naturgy,2022,"SOCIÉTÉ NATIONALE POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCI FUNDACION BANCARIA CAIXA D´ESTALVIS I",nonprofit,4.1,"SOCIÉTÉ NATIONALE POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCI FUNDACION BANCARIA CAIXA D´ESTALVIS I",False,"SOCIÉTÉ NATIONALE POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCI FUNDACION BANCARIA CAIXA D´ESTALVIS I"
+A08015497,Naturgy,2022,CVC,institutional,20.7,PENSIONS DE BARCELONA (LA CAIXA) CVC CAPITAL PARTNERS SICAV- FIS S.A. INFORME DE LAS Nombre o % denominación social del accionista,True,CVC
+A08015497,Naturgy,2022,IFM,institutional,13.9,IFM GLOBAL INFRASTRUCTURE FUND,True,IFM
+A08015497,Naturgy,2023,GIP,institutional,20.6,GLOBAL INFRASTRUCTURE PARTNERS III,True,GIP
+A08015497,Naturgy,2023,"SOCIÉTÉ NATIONALE POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCI FUNDACION BANCARIA CAIXA D´ESTALVIS I",nonprofit,4.1,"SOCIÉTÉ NATIONALE POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCI FUNDACION BANCARIA CAIXA D´ESTALVIS I",False,"SOCIÉTÉ NATIONALE POUR LA RECHERCHE, LA PRODUCTION, LE TRANSPORT, LA TRANSFORMATION ET LA COMMERCI FUNDACION BANCARIA CAIXA D´ESTALVIS I"
+A08015497,Naturgy,2023,CVC,institutional,20.7,PENSIONS DE BARCELONA (LA CAIXA) CVC CAPITAL PARTNERS SICAV- FIS S.A. INFORME DE LAS Nombre o % denominación social del accionista,True,CVC
+A08015497,Naturgy,2023,IFM,institutional,14.9,IFM GLOBAL INFRASTRUCTURE FUND,True,IFM
+A08015497,Naturgy,2024,BlackRock,institutional,20.96,BLACKROCK INC.,True,BlackRock
+A08015497,Naturgy,2024,FUNDACION BANCARIA CAIXA D´ESTALVIS I PENSIONS DE BARCELONA (LA CAIXA) CVC CAPITAL,nonprofit,26.7,FUNDACION BANCARIA CAIXA D´ESTALVIS I PENSIONS DE BARCELONA (LA CAIXA) CVC CAPITAL,False,FUNDACION BANCARIA CAIXA D´ESTALVIS I PENSIONS DE BARCELONA (LA CAIXA) CVC CAPITAL
+A08015497,Naturgy,2024,CVC,institutional,20.7,,True,CVC
+A08015497,Naturgy,2024,IFM,institutional,16.9,PARTNERS PLC IFM GLOBAL INFRASTRUCTURE FUND INFORME DE LAS,True,IFM
+A08015497,Naturgy,2025,BlackRock,institutional,12.62,BLACKROCK SOCIÉTÉ LA,True,BlackRock
+A08015497,Naturgy,2025,Fundación La Caixa (Criteria),nonprofit,26.0,FUNDACION PENSIONS,True,Fundación La Caixa (Criteria)
+A08015497,Naturgy,2025,CVC,institutional,13.8,CVC,True,CVC
+A08015497,Naturgy,2025,IFM,institutional,15.5,IFM GLOBAL,True,IFM
+A08015497,Naturgy,2025,Corporación Financiera Alba,corporate,5.01,Alba,True,Corporación Financiera Alba
+A08055741,Mapfre,2015,Fundación Mapfre,nonprofit,67.83,FUNDACIÓN MAPFRE,True,Fundación Mapfre
+A08055741,Mapfre,2016,Fundación Mapfre,nonprofit,67.73,FUNDACIÓN MAPFRE,True,Fundación Mapfre
+A08055741,Mapfre,2017,Fundación Mapfre,nonprofit,67.71,FUNDACIÓN MAPFRE,True,Fundación Mapfre
+A08055741,Mapfre,2018,Fundación Mapfre,nonprofit,67.71,FUNDACIÓN MAPFRE,True,Fundación Mapfre
+A08055741,Mapfre,2019,Fundación Mapfre,nonprofit,67.71,FUNDACIÓN MAPFRE,True,Fundación Mapfre
+A08055741,Mapfre,2020,Fundación Mapfre,nonprofit,69.8,FUNDACIÓN MAPFRE,True,Fundación Mapfre
+A08055741,Mapfre,2021,Fundación Mapfre,nonprofit,69.8,FUNDACIÓN MAPFRE,True,Fundación Mapfre
+A08055741,Mapfre,2022,Fundación Mapfre,nonprofit,69.8,FUNDACIÓN MAPFRE,True,Fundación Mapfre
+A08055741,Mapfre,2023,Fundación Mapfre,nonprofit,69.8,FUNDACIÓN MAPFRE,True,Fundación Mapfre
+A08055741,Mapfre,2024,Fundación Mapfre,nonprofit,69.8,FUNDACIÓN MAPFRE,True,Fundación Mapfre
+A08055741,Mapfre,2025,Fundación Mapfre,nonprofit,69.69,FUNDACIÓN MAPFRE,True,Fundación Mapfre
+A28015865,Telefonica,2015,BBVA,bank,6.07,"BANCO BILBAO VIZCAYA ARGENTARIA, S.A.",True,BBVA
+A28015865,Telefonica,2015,Fundación La Caixa (Criteria),nonprofit,5.01,FUNDACION BANCARIA CAIXA D ESTALVIS I PENSIONS DE BARCELONA,True,Fundación La Caixa (Criteria)
+A28015865,Telefonica,2015,BlackRock,institutional,3.56,"BLACKROCK, INC",True,BlackRock
+A28015865,Telefonica,2016,BBVA,bank,6.33,"BANCO BILBAO VIZCAYA ARGENTARIA, S.A.",True,BBVA
+A28015865,Telefonica,2016,Fundación La Caixa (Criteria),nonprofit,5.15,FUNDACION BANCARIA CAIXA D ESTALVIS I PENSIONS DE BARCELONA,True,Fundación La Caixa (Criteria)
+A28015865,Telefonica,2016,BlackRock,institutional,5.22,"BLACKROCK, INC",True,BlackRock
+A28015865,Telefonica,2017,BBVA,bank,5.17,"BANCO BILBAO VIZCAYA ARGENTARIA, S.A.",True,BBVA
+A28015865,Telefonica,2017,CaixaBank,bank,5.01,"CAIXABANK, S.A.",True,CaixaBank
+A28015865,Telefonica,2017,BlackRock,institutional,6.63,"BLACKROCK, INC",True,BlackRock
+A28015865,Telefonica,2018,BBVA,bank,5.28,"BANCO BILBAO VIZCAYA ARGENTARIA, S.A.",True,BBVA
+A28015865,Telefonica,2018,CaixaBank,bank,5.01,"CAIXABANK, S.A.",True,CaixaBank
+A28015865,Telefonica,2018,BlackRock,institutional,5.08,"BLACKROCK, INC",True,BlackRock
+A28015865,Telefonica,2019,BBVA,bank,5.18,"Banco Bilbao Vizcaya Argentaria, S.A.",True,BBVA
+A28015865,Telefonica,2019,CaixaBank,bank,5.01,"CaixaBank, S.A.",True,CaixaBank
+A28015865,Telefonica,2019,BlackRock,institutional,5.21,"BlackRock, Inc.",True,BlackRock
+A28015865,Telefonica,2020,BBVA,bank,4.96,"Banco Bilbao Vizcaya Argentaria, S.A.",True,BBVA
+A28015865,Telefonica,2020,CaixaBank,bank,4.7,"CaixaBank, S.A.",True,CaixaBank
+A28015865,Telefonica,2020,BlackRock,institutional,4.68,"BlackRock, Inc. MEMORIA ANUAL CONSOLIDADA 2020",True,BlackRock
+A28015865,Telefonica,2021,BBVA,bank,4.99,"Banco Bilbao Vizcaya Argentaria, S.A.",True,BBVA
+A28015865,Telefonica,2021,CaixaBank,bank,4.49,"CaixaBank, S.A.",True,CaixaBank
+A28015865,Telefonica,2021,BlackRock,institutional,4.48,"BlackRock, Inc.",True,BlackRock
+A28015865,Telefonica,2022,BBVA,bank,4.87,"Banco Bilbao Vizcaya Argentaria, S.A.",True,BBVA
+A28015865,Telefonica,2022,CaixaBank,bank,3.5,"CaixaBank, S.A.",True,CaixaBank
+A28015865,Telefonica,2022,BlackRock,institutional,4.48,"BlackRock, Inc.",True,BlackRock
+A28015865,Telefonica,2023,BBVA,bank,4.86,"Banco Bilbao Vizcaya Argentaria, S.A.",True,BBVA
+A28015865,Telefonica,2023,CaixaBank,bank,3.51,"CaixaBank, S.A.",True,CaixaBank
+A28015865,Telefonica,2023,BlackRock,institutional,4.5,"BlackRock, Inc.",True,BlackRock
+A28015865,Telefonica,2023,Public Investment Fund,state_foreign,4.9,Public Investment Fund,True,Public Investment Fund
+A28015865,Telefonica,2024,SEPI,state,10.0,Sociedad Estatal de Participaciones Industriales (SEPI),True,SEPI
+A28015865,Telefonica,2024,Fundación La Caixa (Criteria),nonprofit,9.99,"Criteria Caixa, S.A.U.",True,Fundación La Caixa (Criteria)
+A28015865,Telefonica,2024,BBVA,bank,4.93,"Banco Bilbao Vizcaya Argentaria, S.A.",True,BBVA
+A28015865,Telefonica,2024,Public Investment Fund,state_foreign,4.97,Public Investment Fund,True,Public Investment Fund
+A28015865,Telefonica,2024,BlackRock,institutional,4.29,"BlackRock, Inc.",True,BlackRock
+A28015865,Telefonica,2025,SEPI,state,10.0,Sociedad Estatal de Participaciones Industriales (SEPI),True,SEPI
+A28015865,Telefonica,2025,Fundación La Caixa (Criteria),nonprofit,9.99,"Criteria Caixa, S.A.U.",True,Fundación La Caixa (Criteria)
+A28015865,Telefonica,2025,Public Investment Fund,state_foreign,9.97,Public Investment Fund,True,Public Investment Fund
+A28015865,Telefonica,2025,BBVA,bank,5.01,"Banco Bilbao Vizcaya Argentaria, S.A.",True,BBVA
+A28015865,Telefonica,2025,BlackRock,institutional,5.01,"BlackRock, Inc.",True,BlackRock
+A58389123,Grifols,2015,Capital Group,institutional,4.95,CAPITAL RESEARCH AND MANAGEMENT COMPANY,True,Capital Group
+A58389123,Grifols,2015,BlackRock,institutional,2.96,"BLACKROCK, INC.",True,BlackRock
+A58389123,Grifols,2015,Fidelity,institutional,2.0,FIDELITY INTERNATIONAL LIMITED,True,Fidelity
+A58389123,Grifols,2015,Scranton Enterprises (Grifols family),family,8.55,"SCRANTON ENTERPRISES, B.V.",True,Grifols family
+A58389123,Grifols,2015,Deria (Grifols family),family,8.87,"DERIA, S.A.",True,Grifols family
+A58389123,Grifols,2015,Núria Roura (Grifols family),family,6.15,DOÑA NÚRIA ROURA CARRERAS,True,Grifols family
+A58389123,Grifols,2015,Oppenheimer,institutional,3.07,OPPENHEIMERFUNDS INC.,True,Oppenheimer
+A58389123,Grifols,2015,Thorthol Holdings (Grifols family),family,7.06,"THORTHOL HOLDINGS, B.V.",True,Grifols family
+A58389123,Grifols,2016,Capital Group,institutional,4.95,CAPITAL RESEARCH AND MANAGEMENT COMPANY,True,Capital Group
+A58389123,Grifols,2016,Fidelity,institutional,1.99,FIDELITY INTERNATIONAL LIMITED,True,Fidelity
+A58389123,Grifols,2016,Núria Roura (Grifols family),family,6.15,DOÑA NÚRIA ROURA CARRERAS,True,Grifols family
+A58389123,Grifols,2016,Oppenheimer,institutional,3.07,OPPENHEIMERFUNDS INC.,True,Oppenheimer
+A58389123,Grifols,2016,Thorthol Holdings (Grifols family),family,7.06,"THORTHOL HOLDINGS, B.V.",True,Grifols family
+A58389123,Grifols,2016,Scranton Enterprises (Grifols family),family,8.67,"SCRANTON ENTERPRISES, B.V.",True,Grifols family
+A58389123,Grifols,2016,Deria (Grifols family),family,8.91,"DERIA, S.A.",True,Grifols family
+A58389123,Grifols,2017,Fidelity,institutional,1.99,FIDELITY INTERNATIONAL LIMITED,True,Fidelity
+A58389123,Grifols,2017,Núria Roura (Grifols family),family,6.15,DOÑA NÚRIA ROURA CARRERAS,True,Grifols family
+A58389123,Grifols,2017,Oppenheimer,institutional,3.07,OPPENHEIMERFUNDS INC.,True,Oppenheimer
+A58389123,Grifols,2017,Thorthol Holdings (Grifols family),family,7.06,"THORTHOL HOLDINGS, B.V.",True,Grifols family
+A58389123,Grifols,2017,Scranton Enterprises (Grifols family),family,8.67,"SCRANTON ENTERPRISES, B.V.",True,Grifols family
+A58389123,Grifols,2017,Deria (Grifols family),family,8.91,"DERIA, S.A.",True,Grifols family
+A58389123,Grifols,2017,BlackRock,institutional,4.4,"BLACKROCK, INC.",True,BlackRock
+A58389123,Grifols,2017,OPPENHEIMER INTERNATIONAL GROWTH FUND,institutional,3.03,OPPENHEIMER INTERNATIONAL GROWTH FUND,False,OPPENHEIMER INTERNATIONAL GROWTH FUND
+A58389123,Grifols,2017,Jupiter,institutional,3.04,JUPITER FUND MANAGEMENT PLC,True,Jupiter
+A58389123,Grifols,2018,Jupiter,institutional,3.04,JUPITER FUND MANAGEMENT PLC,True,Jupiter
+A58389123,Grifols,2018,BlackRock,institutional,4.4,"BLACKROCK, INC.",True,BlackRock
+A58389123,Grifols,2018,AKO Capital,institutional,1.02,AKO EUROPEAN LONG-ONLY MASTER FUND LTD FIDELITY,True,AKO Capital
+A58389123,Grifols,2018,Fidelity,institutional,1.02,INTERNATIONAL,True,Fidelity
+A58389123,Grifols,2018,Núria Roura (Grifols family),family,6.15,LIMITED NÚRIA ROURA CARRERAS INFORME DE LAS,True,Grifols family
+A58389123,Grifols,2019,BlackRock,institutional,4.4,"BLACKROCK, INC.",True,BlackRock
+A58389123,Grifols,2019,Fidelity,institutional,1.02,FIDELITY INTERNATIONAL LIMITED NÚRIA ROURA,True,Fidelity
+A58389123,Grifols,2019,Núria Roura (Grifols family),family,6.15,,True,Grifols family
+A58389123,Grifols,2019,Thorthol Holdings (Grifols family),family,7.06,"CARRERAS THORTHOL HOLDINGS, B.V. SCRANTON",True,Grifols family
+A58389123,Grifols,2019,Scranton Enterprises (Grifols family),family,8.67,,True,Grifols family
+A58389123,Grifols,2019,Deria (Grifols family),family,8.91,"ENTERPRISES, B.V. DERIA, S.A. INFORME DE LAS El 10 de diciembre de 2019 la",True,Grifols family
+A58389123,Grifols,2022,BlackRock,institutional,3.83,"BLACKROCK, INC.",True,BlackRock
+A58389123,Grifols,2022,Capital Group,institutional,5.66,CAPITAL RESEARCH AND MANAGEMENT COMPANY,True,Capital Group
+A58389123,Grifols,2022,Deria (Grifols family),family,9.2,"DERIA, S.A.",True,Grifols family
+A58389123,Grifols,2022,EUROPACIFIC GROWTH FUND INFORME DE LAS,institutional,3.03,EUROPACIFIC GROWTH FUND INFORME DE LAS,False,EUROPACIFIC GROWTH FUND INFORME DE LAS
+A58389123,Grifols,2023,BlackRock,institutional,3.91,"BLACKROCK, INC.",True,BlackRock
+A58389123,Grifols,2023,Capital Group,institutional,5.66,CAPITAL RESEARCH AND MANAGEMENT COMPANY,True,Capital Group
+A58389123,Grifols,2023,Deria (Grifols family),family,9.2,"DERIA, S.A.",True,Grifols family
+A58389123,Grifols,2023,EUROPACIFIC GROWTH FUND INFORME DE LAS,institutional,3.03,EUROPACIFIC GROWTH FUND INFORME DE LAS,False,EUROPACIFIC GROWTH FUND INFORME DE LAS
+A58389123,Grifols,2024,BlackRock,institutional,4.31,"BLACKROCK, INC.",True,BlackRock
+A58389123,Grifols,2024,Capital Group,institutional,4.58,CAPITAL RESEARCH AND MANAGEMENT COMPANY,True,Capital Group
+A58389123,Grifols,2024,Deria (Grifols family),family,9.2,"DERIA, S.A.",True,Grifols family
+A58389123,Grifols,2024,EUROPACIFIC GROWTH FUND INFORME DE LAS,institutional,3.23,EUROPACIFIC GROWTH FUND INFORME DE LAS,False,EUROPACIFIC GROWTH FUND INFORME DE LAS
+A78374725,Repsol,2015,Temasek,state_foreign,5.11,TEMASEK HOLDINGS (PRIVATE) LIMITED,True,Temasek
+A78374725,Repsol,2015,Sacyr,corporate,8.73,"SACYR,S.A",True,Sacyr
+A78374725,Repsol,2015,Fundación La Caixa (Criteria),nonprofit,12.2,"FUNDACION BANCARIA CAIXA D,ESTALVIS I PENSIONS DE BARCELONA",True,Fundación La Caixa (Criteria)
+A78374725,Repsol,2016,Temasek,state_foreign,4.79,TEMASEK HOLDINGS (PRIVATE) LIMITED,True,Temasek
+A78374725,Repsol,2016,Sacyr,corporate,8.34,"SACYR,S.A",True,Sacyr
+A78374725,Repsol,2016,Fundación La Caixa (Criteria),nonprofit,10.05,"FUNDACION BANCARIA CAIXA D,ESTALVIS I PENSIONS DE BARCELONA",True,Fundación La Caixa (Criteria)
+A78374725,Repsol,2017,Temasek,state_foreign,4.15,TEMASEK HOLDINGS (PRIVATE) LIMITED,True,Temasek
+A78374725,Repsol,2017,Sacyr,corporate,8.03,"SACYR,S.A",True,Sacyr
+A78374725,Repsol,2017,CaixaBank,bank,9.64,"CAIXABANK, S.A.",True,CaixaBank
+A78374725,Repsol,2018,Sacyr,corporate,8.03,"SACYR,S.A",True,Sacyr
+A78374725,Repsol,2018,BlackRock,institutional,4.98,BLACKROCK INC,True,BlackRock
+A78374725,Repsol,2018,CaixaBank,bank,3.66,"CAIXABANK, S.A.",True,CaixaBank
+A78374725,Repsol,2018,Temasek,state_foreign,2.43,TEMASEK HOLDINGS (PRIVATE) LIMITED,True,Temasek
+A78374725,Repsol,2019,Temasek,state_foreign,1.5,TEMASEK HOLDINGS (PRIVATE) LIMITED,True,Temasek
+A78374725,Repsol,2019,Sacyr,corporate,8.03,"SACYR,S.A",True,Sacyr
+A78374725,Repsol,2019,BlackRock,institutional,5.0,BLACKROCK INC,True,BlackRock
+A78374725,Repsol,2020,Sacyr,corporate,8.03,"SACYR,S.A",True,Sacyr
+A78374725,Repsol,2020,BlackRock,institutional,5.0,BLACKROCK INC,True,BlackRock
+A78374725,Repsol,2020,Amundi,institutional,4.5,"AMUNDI ASSET MANAGEMENT, S.A.",True,Amundi
+A78374725,Repsol,2020,JPMorgan,bank,6.85,JP MORGAN CHASE & CO,True,JPMorgan
+A78374725,Repsol,2021,BlackRock,institutional,5.12,BLACKROCK INC,True,BlackRock
+A78374725,Repsol,2021,Amundi,institutional,4.5,"AMUNDI ASSET MANAGEMENT, S.A.",True,Amundi
+A78374725,Repsol,2021,Banco Santander,bank,3.83,"BANCO SANTANDER,S.A.",True,Banco Santander
+A78374725,Repsol,2021,Norges Bank,state_foreign,3.33,NORGES BANK,True,Norges Bank
+A78374725,Repsol,2021,Sacyr,corporate,3.09,"SACYR,S.A",True,Sacyr
+A78374725,Repsol,2022,BlackRock,institutional,5.48,BLACKROCK INC,True,BlackRock
+A78374725,Repsol,2022,Amundi,institutional,3.2,"AMUNDI, S.A.",True,Amundi
+A78374725,Repsol,2022,Norges Bank,state_foreign,3.25,NORGES BANK,True,Norges Bank
+A78374725,Repsol,2023,BlackRock,institutional,5.48,BLACKROCK INC,True,BlackRock
+A78374725,Repsol,2023,Norges Bank,state_foreign,5.01,NORGES BANK,True,Norges Bank
+A78374725,Repsol,2023,Millennium,institutional,1.07,MILLENIUM GROUP MANAGEMENT LLC,True,Millennium
+A78374725,Repsol,2024,BlackRock,institutional,6.2,BLACKROCK INC,True,BlackRock
+A78374725,Repsol,2024,Norges Bank,state_foreign,4.99,NORGES BANK,True,Norges Bank
+A78374725,Repsol,2025,BlackRock,institutional,7.18,BLACKROCK INC,True,BlackRock
+A86212420,Aena,2015,ENAIRE,state,51.0,ENAIRE,True,ENAIRE
+A86212420,Aena,2015,Talos Capital,institutional,3.31,TALOS CAPITAL LIMITED,True,Talos Capital
+A86212420,Aena,2015,TCI (Christopher Hohn),institutional,4.4,"TCI LUXEMBOURG, S.A.R.L.",True,TCI (Christopher Hohn)
+A86212420,Aena,2015,BlackRock,institutional,2.69,BLACKROCK INC,True,BlackRock
+A86212420,Aena,2016,Talos Capital,institutional,3.31,TALOS CAPITAL LIMITED,True,Talos Capital
+A86212420,Aena,2016,TCI (Christopher Hohn),institutional,4.4,"TCI LUXEMBOURG, S.A.R.L.",True,TCI (Christopher Hohn)
+A86212420,Aena,2016,ENAIRE,state,51.0,ENAIRE,True,ENAIRE
+A86212420,Aena,2016,HSBC,bank,3.28,"HSBC HOLDINGS, PLC",True,HSBC
+A86212420,Aena,2017,Talos Capital,institutional,3.31,TALOS CAPITAL DESIGNATED ACTIVITY COMPANY,True,Talos Capital
+A86212420,Aena,2017,TCI (Christopher Hohn),institutional,4.4,"TCI LUXEMBOURG, S.A.R.L.",True,TCI (Christopher Hohn)
+A86212420,Aena,2017,ENAIRE,state,51.0,ENAIRE,True,ENAIRE
+A86212420,Aena,2017,HSBC,bank,3.28,"HSBC HOLDINGS, PLC",True,HSBC
+A86212420,Aena,2017,DON CHRISTOPHER ANTHONY HOHN,individual,0.0,DON CHRISTOPHER ANTHONY HOHN,False,DON CHRISTOPHER ANTHONY HOHN
+A86212420,Aena,2018,ENAIRE,state,51.0,ENAIRE,True,ENAIRE
+A86212420,Aena,2018,TCI (Christopher Hohn),institutional,8.29,CHRISTOPHER ANTHONY HOHN,True,TCI (Christopher Hohn)
+A86212420,Aena,2018,Deutsche Bank,bank,4.39,"DEUTSCHE BANK, A.G.",True,Deutsche Bank
+A86212420,Aena,2018,MFS,institutional,3.05,MASSACHUSETTS FINANCIAL SERVICES COMPANY,True,MFS
+A86212420,Aena,2018,THE CHILDRENS INVESTMENT MASTER FUND,institutional,3.61,THE CHILDRENS INVESTMENT MASTER FUND,False,THE CHILDRENS INVESTMENT MASTER FUND
+A86212420,Aena,2019,ENAIRE,state,51.0,ENAIRE,True,ENAIRE
+A86212420,Aena,2019,TCI (Christopher Hohn),institutional,8.29,CHRISTOPHER ANTHONY HOHN,True,TCI (Christopher Hohn)
+A86212420,Aena,2019,Capital Group,institutional,3.21,CAPITAL RESEARCH AND MANAGEMENT COMPANY,True,Capital Group
+A86212420,Aena,2019,BlackRock,institutional,3.0,"BLACKROCK, INC.",True,BlackRock
+A86212420,Aena,2020,ENAIRE,state,51.0,ENAIRE,True,ENAIRE
+A86212420,Aena,2020,TCI (Christopher Hohn),institutional,7.16,CHRISTOPHER ANTHONY HOHN,True,TCI (Christopher Hohn)
+A86212420,Aena,2020,BlackRock,institutional,3.24,"BLACKROCK, INC.",True,BlackRock
+A86212420,Aena,2022,ENAIRE,state,51.0,ENAIRE,True,ENAIRE
+A86212420,Aena,2022,TCI (Christopher Hohn),institutional,6.58,"HOHN, CHRISTOPHER ANTHONY",True,TCI (Christopher Hohn)
+A86212420,Aena,2022,BlackRock,institutional,3.08,"BLACKROCK, INC.",True,BlackRock
+A86212420,Aena,2022,Veritas,institutional,3.02,VERITAS ASSET MANAGEMENT LLP,True,Veritas
+A86212420,Aena,2023,ENAIRE,state,51.0,den o m i n a c i ó n s o cial d e l a c c i o n i s t a ENAIRE HOHN,True,ENAIRE
+A86212420,Aena,2023,TCI (Christopher Hohn),institutional,6.257,CHRISTOPHER ANTHONY,True,TCI (Christopher Hohn)
+A86212420,Aena,2023,BlackRock,institutional,3.071,"BLACKROCK, INC.",True,BlackRock
+A86212420,Aena,2023,Veritas,institutional,3.024,VERITAS ASSET MANAGEMENT LLP,True,Veritas
+A86212420,Aena,2024,ENAIRE,state,51.0,ENAIRE,True,ENAIRE
+A86212420,Aena,2024,TCI (Christopher Hohn),institutional,6.257,"HOHN, CHRISTOPHER ANTHONY",True,TCI (Christopher Hohn)
+A86212420,Aena,2024,BlackRock,institutional,3.794,"BLACKROCK, INC.",True,BlackRock
+A86212420,Aena,2025,ENAIRE,state,51.0,"ENAIRE HOHN, CHRISTOPHER",True,ENAIRE
+A86212420,Aena,2025,TCI (Christopher Hohn),institutional,6.257,,True,TCI (Christopher Hohn)
+A86212420,Aena,2025,BlackRock,institutional,4.193,"ANTHONY BLACKROCK, INC. Sistemas de control y",True,BlackRock

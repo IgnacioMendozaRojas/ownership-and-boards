@@ -1,0 +1,43 @@
+# Significant shareholders in the Spanish pilot: a pattern found near each row of percentages in
+# section A.2, the canonical name, and the owner type. Family vehicles are typed 'family' from
+# public knowledge of who controls them; extend this list when the sample grows.
+- {pattern: "ENAIRE", name: ENAIRE, type: state}
+- {pattern: "SOCIEDAD ESTATAL DE PARTICIPACIONES|\\(SEPI\\)|\\bSEPI\\b", name: SEPI, type: state}
+- {pattern: "PUBLIC INVESTMENT FUND", name: Public Investment Fund, type: state_foreign}
+- {pattern: "TEMASEK", name: Temasek, type: state_foreign}
+- {pattern: "NORGES", name: Norges Bank, type: state_foreign}
+- {pattern: "SOCI.T. NA[CT]IONALE|SONATRACH|POUR LA RECHERCHE|HYDROCARBURES", name: Sonatrach, type: state_foreign}
+- {pattern: "HOHN|CHRISTOPHER ANTHONY|CHILDREN.?S INVESTMENT|TCI LUXEMBOURG", name: TCI (Christopher Hohn), type: institutional}
+- {pattern: "BLACK ?ROCK", name: BlackRock, type: institutional}
+- {pattern: "CAPITAL RESEARCH|EUROPACIFIC", name: Capital Group, type: institutional}
+- {pattern: "FIDELITY", name: Fidelity, type: institutional}
+- {pattern: "OPPENHEIMER", name: Oppenheimer, type: institutional}
+- {pattern: "INVESCO", name: Invesco, type: institutional}
+- {pattern: "AMUNDI", name: Amundi, type: institutional}
+- {pattern: "MASSACHUSETTS FINANCIAL", name: MFS, type: institutional}
+- {pattern: "JUPITER", name: Jupiter, type: institutional}
+- {pattern: "VERITAS", name: Veritas, type: institutional}
+- {pattern: "MILLEN+IUM", name: Millennium, type: institutional}
+- {pattern: "AKO EUROPEAN", name: AKO Capital, type: institutional}
+- {pattern: "TALOS", name: Talos Capital, type: institutional}
+- {pattern: "GLOBAL INFRASTRUCTURE (MANAGEMENT|PARTNERS)|GLOBAL INFRASTRUCTURE$|\\bGIP\\b", name: GIP, type: institutional}
+- {pattern: "\\bCVC\\b", name: CVC, type: institutional}
+- {pattern: "\\bIFM\\b|INFRAESTRUCTURES FUND", name: IFM, type: institutional}
+- {pattern: "FUNDACI.N BANCARIA CAIXA|CRITERIA|LA CAIXA|PENSIONS DE BARCELONA|FUNDACION PENSIONS", name: Fundación La Caixa (Criteria), type: nonprofit}
+- {pattern: "CAIXABANK", name: CaixaBank, type: bank}
+- {pattern: "BANCO BILBAO|\\bBBVA\\b", name: BBVA, type: bank}
+- {pattern: "BANCO SANTANDER", name: Banco Santander, type: bank}
+- {pattern: "HSBC", name: HSBC, type: bank}
+- {pattern: "DEUTSCHE BANK", name: Deutsche Bank, type: bank}
+- {pattern: "JP ?MORGAN", name: JPMorgan, type: bank}
+- {pattern: "FUNDACI.N MAPFRE", name: Fundación Mapfre, type: nonprofit}
+- {pattern: "\\bALBA\\b", name: Corporación Financiera Alba, type: corporate}
+- {pattern: "SACYR", name: Sacyr, type: corporate}
+- {pattern: "REPSOL", name: Repsol, type: corporate}
+- {pattern: "WIT EUROPES", name: Wit Europese Investering (Entrecanales), type: family}
+- {pattern: "TUSSEN DE GRACHTEN", name: Tussen de Grachten (Entrecanales), type: family}
+- {pattern: "LA VERDOSA", name: La Verdosa (Entrecanales), type: family}
+- {pattern: "SCRANTON", name: Scranton Enterprises (Grifols family), type: family}
+- {pattern: "\\bDERIA\\b", name: Deria (Grifols family), type: family}
+- {pattern: "THORTHOL", name: Thorthol Holdings (Grifols family), type: family}
+- {pattern: "N.RIA ROURA", name: Núria Roura (Grifols family), type: family}
