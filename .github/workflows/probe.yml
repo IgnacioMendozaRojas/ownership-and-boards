@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       only:
-        description: "Probes to run (empty = round 2): cl_universe cl_tabs cl_pensions es_index es_iagc cl_history cl_coverage cl_pension_issuers es_more"
+        description: "Probes to run (empty = the latest round); names are listed in src/boards/probe.py"
         required: false
         default: ""
 

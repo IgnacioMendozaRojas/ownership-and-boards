@@ -454,20 +454,120 @@ def probe_es_more(f: Fetcher, out: Path) -> dict:
     return res
 
 
+# --- round 3: the three loose ends --------------------------------------------------------------
+
+
+def probe_cl_board_history(f: Fetcher, out: Path) -> dict:
+    """Board history: the date-range form posted alone, and the PDF version of the register."""
+    import pdfplumber
+
+    rut, res = "90690000", {"source": "CMF board history (Copec)"}
+    r = f.s.post(
+        cmf_url(rut, 46), data={"txt_inicio": "01/01/2010", "txt_termino": "31/12/2012"}, timeout=60
+    )
+    rows = first_table_rows(r.text, "Cargo")
+    res["post_dates_only"] = {**meta(r), "rows": rows[:25]}
+    notice("cl_board_history", f"POST dates only: {len(rows) - 1} rows, {rows[1:3]}")
+    for start, end in (("01/01/2010", "31/12/2012"), ("01/01/2000", "31/12/2025")):
+        url = (
+            f"{CMF}/inc/directores_pdf.php?rut={rut}&razon=&comite_aux=N&info=1"
+            f"&txt_inicio={start}&txt_termino={end}"
+        )
+        r = f.get(url)
+        item = meta(r)
+        if r is not None and r.content[:4] == b"%PDF":
+            save(out, f"cl_board_{start[-4:]}_{end[-4:]}.pdf", r)
+            with pdfplumber.open(io.BytesIO(r.content)) as pdf:
+                text = "\n".join((p.extract_text() or "") for p in pdf.pages)
+                item["pages"] = len(pdf.pages)
+            item["text"] = text[:1500]
+        elif r is not None:
+            item["head"] = r.text[:300]
+        res[f"pdf_{start[-4:]}_{end[-4:]}"] = item
+        lines = [x for x in item.get("text", "").splitlines() if re.search(r"\d{1,2}\.\d{3}", x)]
+        notice("cl_board_history", f"PDF {start}-{end}: {item['type']}, {len(lines)} RUT lines")
+    return res
+
+
+def probe_cl_pension_links(f: Fetcher, out: Path) -> dict:
+    """Every Excel link on the portfolio page for 2025-12, with the title row of each file."""
+    url = (
+        "https://www.spensiones.cl/apps/loadCarteras/loadCarInv.php?menu=sci&menuN1=estfinfp"
+        "&menuN2=NOID&orden=11&periodo=202512&ext=.php"
+    )
+    r = f.get(url)
+    soup = BeautifulSoup(r.text, "lxml")
+    res: dict = {"source": "SP portfolio files 2025-12", "files": []}
+    for i, a in enumerate(soup.find_all("a", href=re.compile(r"xls", re.I))[:20]):
+        row = a.find_parent("tr")
+        heading = a.find_previous(["h1", "h2", "h3", "h4", "b", "strong"])
+        rx = f.get(urljoin(url, a["href"]))
+        title = ""
+        if rx is not None and rx.ok:
+            save(out, f"cl_sp_file_{i:02d}.xls", rx)
+            try:
+                t = pd.read_html(io.BytesIO(rx.content))[0]
+                title = (
+                    " | ".join(map(str, t.columns[:3]))
+                    + f" ; {t.shape}; "
+                    + str(t.iloc[:5, 0].tolist())
+                )
+            except Exception as e:
+                title = repr(e)[:120]
+        res["files"].append(
+            {
+                "i": i,
+                "row": row.get_text(" | ", strip=True)[:150] if row else "",
+                "heading": heading.get_text(" ", strip=True)[:150] if heading else "",
+                "title": title[:400],
+            }
+        )
+        notice("cl_pension_links", f"{i}: {res['files'][-1]['heading'][:60]} :: {title[:150]}")
+    return res
+
+
+def probe_es_retry(f: Fetcher, out: Path) -> dict:
+    """CNMV slowly, with ordinary browser headers, to tell a block from a timeout."""
+    s = requests.Session()
+    s.headers.update(
+        {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/128.0 Safari/537.36",
+            "Accept-Language": "es-ES,es;q=0.9",
+            "Accept": "text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.8",
+        }
+    )
+    res: dict = {"source": "CNMV retry"}
+    for nif in ("A86212420", "A15075062"):
+        url = f"{CNMV}?nif={nif}"
+        try:
+            r = s.get(url, timeout=90)
+            docs = find_links(r.text, url, r"verdocumento")
+            res[nif] = {**meta(r), "docs": [d["row"][:80] for d in docs][:20]}
+            if nif == "A15075062":
+                save(out, f"es_index_{nif}.html", r)
+            notice("es_retry", f"{nif}: HTTP {r.status_code}, {len(docs)} docs")
+        except requests.RequestException as e:
+            res[nif] = {"error": repr(e)[:300]}
+            notice("es_retry", f"{nif}: {e!r}"[:300], level="warning")
+        time.sleep(8)
+    return res
+
+
 # --- runner -------------------------------------------------------------------------------------
 
-ROUND_2 = ["cl_history", "cl_coverage", "cl_pension_issuers", "es_more"]
+ROUND_3 = ["cl_board_history", "cl_pension_links", "es_retry"]
 
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default="probes")
-    ap.add_argument("--only", nargs="*", help="probe names; default: the round-2 probes")
+    ap.add_argument("--only", nargs="*", help="probe names; default: the round-3 probes")
     args = ap.parse_args(argv)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     f = Fetcher()
-    wanted = set(args.only or ROUND_2)
+    wanted = set(args.only or ROUND_3)
     results: dict[str, dict] = {}
     steps = [
         ("cl_universe", lambda: probe_cl_universe(f, out)),
@@ -479,6 +579,9 @@ def main(argv: list[str] | None = None) -> int:
         ("cl_coverage", lambda: probe_cl_coverage(f, out)),
         ("cl_pension_issuers", lambda: probe_cl_pension_issuers(f, out)),
         ("es_more", lambda: probe_es_more(f, out)),
+        ("cl_board_history", lambda: probe_cl_board_history(f, out)),
+        ("cl_pension_links", lambda: probe_cl_pension_links(f, out)),
+        ("es_retry", lambda: probe_es_retry(f, out)),
     ]
     for name, run in steps:
         if name not in wanted:
