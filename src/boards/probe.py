@@ -554,20 +554,124 @@ def probe_es_retry(f: Fetcher, out: Path) -> dict:
     return res
 
 
+# --- round 4 ------------------------------------------------------------------------------------
+
+
+def probe_cl_board_pdf(f: Fetcher, out: Path) -> dict:
+    """Board register as PDF (correct path), and the history form posted after a first visit."""
+    import pdfplumber
+
+    rut, res = "90690000", {"source": "CMF board PDF and form with cookies"}
+    for start, end in (("", ""), ("01/01/2010", "31/12/2012")):
+        url = (
+            "https://www.cmfchile.cl/institucional/inc/directores_pdf.php"
+            f"?rut={rut}&razon=&comite_aux=N&info=1&txt_inicio={start}&txt_termino={end}"
+        )
+        r = f.get(url)
+        item = meta(r)
+        if r is not None and r.content[:4] == b"%PDF":
+            save(out, f"cl_board_pdf_{start[-4:] or 'now'}.pdf", r)
+            with pdfplumber.open(io.BytesIO(r.content)) as pdf:
+                item["pages"] = len(pdf.pages)
+                item["text"] = "\n".join((p.extract_text() or "") for p in pdf.pages)[:1500]
+        elif r is not None:
+            item["head"] = r.text[:200]
+        res[f"pdf_{start[-4:] or 'now'}"] = item
+        notice("cl_board_pdf", f"PDF {start or 'current'}: {item['type']}, {item.get('pages')} pp")
+    page = cmf_url(rut, 46)
+    f.get(page)  # first visit sets the session cookie the form may expect
+    r = f.s.post(
+        page,
+        data={"txt_inicio": "01/01/2010", "txt_termino": "31/12/2012"},
+        headers={"Referer": page},
+        timeout=60,
+    )
+    rows = first_table_rows(r.text, "Cargo")
+    tables = [first_table_rows(r.text, h) for h in ("Fecha Cese", "Término", "Desde")]
+    res["form_with_cookie"] = {**meta(r), "rows": rows[:12], "other": [t[:5] for t in tables]}
+    save(out, "cl_board_form_2010.html", r)
+    notice("cl_board_pdf", f"form after visit: {len(rows) - 1} rows; first {rows[1:2]}")
+    return res
+
+
+def probe_cl_pension_zip(f: Fetcher, out: Path) -> dict:
+    """The disaggregated portfolio ZIP: its files and the header of the first one."""
+    import zipfile
+
+    url = (
+        "https://www.spensiones.cl/apps/loadCarteras/loadCarInv.php?menu=sci&menuN1=estfinfp"
+        "&menuN2=NOID&orden=11&periodo=202512&ext=.php"
+    )
+    r = f.get(url)
+    zips = find_links(r.text, url, r"\.zip") if r is not None else []
+    res: dict = {"source": "SP disaggregated portfolio", "zip_links": [z["href"] for z in zips]}
+    if zips:
+        rz = f.get(zips[0]["href"])
+        res["zip"] = meta(rz)
+        if rz is not None and rz.ok:
+            try:
+                zf = zipfile.ZipFile(io.BytesIO(rz.content))
+                names = zf.namelist()
+                res["members"] = names[:30]
+                head = zf.read(names[0])[:3000].decode("latin-1", "replace")
+                res["first_head"] = head
+                (out / "raw").mkdir(parents=True, exist_ok=True)
+                (out / "raw" / "cl_sp_zip_head.txt").write_text(head)
+            except zipfile.BadZipFile as e:
+                res["zip_error"] = repr(e)
+    notice(
+        "cl_pension_zip",
+        f"{len(zips)} zip links; zip {res.get('zip', {}).get('bytes')} bytes; "
+        f"members {res.get('members', [])[:5]}",
+    )
+    return res
+
+
+def probe_es_universe(f: Fetcher, out: Path) -> dict:
+    """Candidate lists of Spanish listed companies with their NIF."""
+    res: dict = {"source": "CNMV universe"}
+    urls = {
+        "iagc_report_2025": (
+            "https://www.cnmv.es/DocPortal/Publicaciones/Informes/CNMV_IAGC_2025_DEF.pdf"
+        ),
+        "entidades": "https://www.cnmv.es/portal/consultas/busqueda.aspx?id=29",
+        "cotizadas": "https://www.cnmv.es/portal/Consultas/EE/ListadoEntidadesCotizadas.aspx",
+    }
+    for key, url in urls.items():
+        r = f.get(url)
+        item = meta(r)
+        if r is not None and r.ok and r.content[:4] == b"%PDF":
+            import pdfplumber
+
+            save(out, f"es_{key}.pdf", r)
+            with pdfplumber.open(io.BytesIO(r.content)) as pdf:
+                item["pages"] = len(pdf.pages)
+                tail = "\n".join((p.extract_text() or "") for p in pdf.pages[-12:])
+            item["sa_names_in_annex"] = len(re.findall(r"\bS\.A\.", tail))
+            item["tail"] = tail[:1200]
+        elif r is not None and r.ok:
+            item["nif_links"] = len(find_links(r.text, url, r"nif="))
+            item["title"] = (BeautifulSoup(r.text, "lxml").title or "").__str__()[:120]
+        res[key] = item
+        notice("es_universe", f"{key}: HTTP {item['status']}, {item.get('pages')} pp, {item}"[:250])
+        time.sleep(4)
+    return res
+
+
 # --- runner -------------------------------------------------------------------------------------
 
-ROUND_3 = ["cl_board_history", "cl_pension_links", "es_retry"]
+LATEST = ["cl_board_pdf", "cl_pension_zip", "es_universe"]
 
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default="probes")
-    ap.add_argument("--only", nargs="*", help="probe names; default: the round-3 probes")
+    ap.add_argument("--only", nargs="*", help="probe names; default: the latest round")
     args = ap.parse_args(argv)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     f = Fetcher()
-    wanted = set(args.only or ROUND_3)
+    wanted = set(args.only or LATEST)
     results: dict[str, dict] = {}
     steps = [
         ("cl_universe", lambda: probe_cl_universe(f, out)),
@@ -582,6 +686,9 @@ def main(argv: list[str] | None = None) -> int:
         ("cl_board_history", lambda: probe_cl_board_history(f, out)),
         ("cl_pension_links", lambda: probe_cl_pension_links(f, out)),
         ("es_retry", lambda: probe_es_retry(f, out)),
+        ("cl_board_pdf", lambda: probe_cl_board_pdf(f, out)),
+        ("cl_pension_zip", lambda: probe_cl_pension_zip(f, out)),
+        ("es_universe", lambda: probe_es_universe(f, out)),
     ]
     for name, run in steps:
         if name not in wanted:
