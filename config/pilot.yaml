@@ -1,7 +1,8 @@
 # Pilot sample. Chilean firms are matched by name against the CMF issuers list (the RUT comes
 # from there); Spanish firms are given by NIF, as the CNMV indexes its reports by NIF.
+# 'latest' extends the years to the last full year on each run.
 chile:
-  years: [2010, 2025]
+  years: [2010, latest]
   month: 12
   firms:
     - EMPRESAS COPEC
@@ -35,7 +36,7 @@ chile:
     - ^CAMANCHACA
     - INVERSIONES LA CONSTRUCCION
 spain:
-  years: [2015, 2025]
+  years: [2015, latest]
   firms:
     A86212420: Aena
     A08055741: Mapfre

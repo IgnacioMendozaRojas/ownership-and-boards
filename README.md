@@ -68,7 +68,7 @@ Three hypotheses guide the next step, not yet tested: the controller's over-repr
 - Figures checked against the filings: ENAIRE's 51% of Aena and Copec's 60.82% held by AntarChile, both as reported.
 - 95% of the Spanish significant holders are matched to a reviewed holder; the rest keep their raw name and are flagged in [`holders_es.csv`](data/processed/holders_es.csv). A firm-year counts as read in full only when every row of its holdings table is matched; the representation chart shows only those, and its subtitle names any firm left out (Grifols in 2025, whose table runs over a page break and misses a holding reported in a footnote).
 - The CMF director register is incomplete for some firm-years (LATAM, Enel Chile and SQM list fewer directors than they have); board measures use only firm-years with at least 5 directors (`board_complete`).
-- 34 offline tests cover the parsers and the owner rules; `ruff` and `pytest` run on every push.
+- 35 offline tests cover the parsers and the owner rules; `ruff` and `pytest` run on every push.
 
 **Limitations of the pilot.** Small samples (30 and 7 firms). In Chile, who each director represents is not declared, so representation must be inferred (shared directors, AFP-elected directors); custodian accounts hide part of the ownership. Five Spanish firms are missing because their CNMV identifier did not resolve. Holder names in the most irregular Spanish tables (Naturgy 2019-2024) are partly unmatched.
 
@@ -80,7 +80,7 @@ Three hypotheses guide the next step, not yet tested: the controller's over-repr
 
 ## Automation
 
-[`pilot.yml`](.github/workflows/pilot.yml) downloads the data in two parallel jobs that resume where the last run stopped, then rebuilds the panels, the figures, [`latest.json`](latest.json) and the block above. Run locally with `boards fetch-cl`, `boards fetch-es` and `boards report`.
+[`pilot.yml`](.github/workflows/pilot.yml) runs every 15 April, when the December shareholders and the annual governance reports are out, and whenever the sample changes. It downloads the data in two parallel jobs that resume where the last run stopped and extend the years to the last full year, then rebuilds the panels, the figures, [`latest.json`](latest.json) and the block above. Run locally with `boards fetch-cl`, `boards fetch-es` and `boards report`.
 
 ## License
 

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import os
 import re
+from datetime import date
 from pathlib import Path
 
 import pandas as pd
@@ -44,6 +45,15 @@ HOLD_COLS = ["rut", "period", "n_holders"]
 BOARD_COLS = ["rut", "director_rut", "director", "role", "appointed", "ended", "source"]
 
 
+def year_range(cfg: dict, today: date | None = None) -> tuple[int, int]:
+    """First and last year to cover; 'latest' means the last full year, whose December
+    shareholders and annual governance reports are published by the spring."""
+    y0, y1 = cfg["years"]
+    if y1 == "latest":
+        y1 = (today or date.today()).year - 1
+    return int(y0), int(y1)
+
+
 def match_firms(issuers: list[dict], patterns: list[str]) -> tuple[list[dict], list[str]]:
     found, missing = [], []
     for p in patterns:
@@ -68,7 +78,7 @@ def fetch_cl(web: Web, cfg: dict) -> None:
         notice("fetch_cl", f"{len(firms)} firms matched; not found: {missing}")
     log = read_csv(out / "log.csv", LOG_COLS)
     done = set(zip(log["rut"], log["kind"], log["period"], strict=True))
-    y0, y1 = cfg["years"]
+    y0, y1 = year_range(cfg)
     month = cfg.get("month", 12)
     for firm in firms:
         rut = firm["rut"]
@@ -109,7 +119,7 @@ def fetch_cl(web: Web, cfg: dict) -> None:
 
 
 def fetch_es(web: Web, cfg: dict) -> None:
-    y0, y1 = cfg["years"]
+    y0, y1 = year_range(cfg)
     rows = []
     for nif, name in cfg["firms"].items():
         entries = cnmv.index(web, nif)

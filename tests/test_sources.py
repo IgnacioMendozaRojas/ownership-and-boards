@@ -61,3 +61,12 @@ def test_parse_cnmv_index():
     e = cnmv.parse_index(INDEX)[0]
     assert e["year"] == 2025 and e["registered"] == "25/02/2026"
     assert e["url"].startswith("https://www.cnmv.es/webservices/verdocumento")
+
+
+def test_year_range_latest_is_the_last_full_year():
+    from datetime import date
+
+    from boards.cli import year_range
+
+    assert year_range({"years": [2010, "latest"]}, date(2027, 4, 15)) == (2010, 2026)
+    assert year_range({"years": [2015, 2025]}) == (2015, 2025)
