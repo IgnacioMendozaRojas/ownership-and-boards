@@ -2,7 +2,8 @@ name: Pilot data
 
 # Downloads the pilot sample: 30 Chilean firms (CMF company pages, 2010 to the last full year) and
 # 12 Spanish firms (CNMV governance reports, 2015 to the last full year). Runs resume where the
-# last one stopped; each job commits its progress even if it stops early. These pages are the public website, not the CMF API.
+# last one stopped; each job commits its progress even if it stops early. These pages are the
+# public websites, not the CMF API.
 on:
   # every 15 April: December shareholders and the annual governance reports are out by then
   schedule:
