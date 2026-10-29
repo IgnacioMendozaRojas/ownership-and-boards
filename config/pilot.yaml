@@ -1,0 +1,51 @@
+# Pilot sample. Chilean firms are matched by name against the CMF issuers list (the RUT comes
+# from there); Spanish firms are given by NIF, as the CNMV indexes its reports by NIF.
+chile:
+  years: [2010, 2025]
+  month: 12
+  firms:
+    - EMPRESAS COPEC
+    - EMPRESAS CMPC
+    - FALABELLA
+    - ^CENCOSUD S\.?A
+    - QUIMICA Y MINERA DE CHILE
+    - ^ENEL CHILE
+    - ^COLBUN
+    - NACIONAL DE TELECOMUNICACIONES
+    - LATAM AIRLINES
+    - CERVECERIAS UNIDAS
+    - EMBOTELLADORA ANDINA
+    - PARQUE ARAUCO
+    - ^PLAZA S\.?A
+    - ^AGUAS ANDINAS
+    - ^CAP S\.?A
+    - QUINENCO
+    - ^ANTARCHILE
+    - SUD AMERICANA DE VAPORES
+    - ENGIE ENERGIA CHILE
+    - ^SONDA
+    - ^SMU S\.?A
+    - CONCHA Y TORO
+    - AGUAS METROPOLITANAS
+    - CENCOSUD SHOPPING
+    - ^SALFACORP
+    - ^BESALCO
+    - ^SOCOVESA
+    - ^HORTIFRUT
+    - ^CAMANCHACA
+    - INVERSIONES LA CONSTRUCCION
+spain:
+  years: [2015, 2025]
+  firms:
+    A86212420: Aena
+    A08055741: Mapfre
+    A48010615: Iberdrola
+    A28015865: Telefonica
+    A78374725: Repsol
+    A28004885: ACS
+    A08001851: Acciona
+    A28023430: Endesa
+    A08015497: Naturgy
+    A58389123: Grifols
+    A28294726: Enagas
+    A78003662: Redeia

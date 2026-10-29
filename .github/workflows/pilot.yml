@@ -1,0 +1,47 @@
+name: Pilot data
+
+# Downloads the pilot sample: 30 Chilean firms (CMF company pages, 2010-2025) and 12 Spanish firms
+# (CNMV governance reports, 2015-2025). Runs resume where the last one stopped; each job commits
+# its progress even if it stops early. These pages are the public website, not the CMF API.
+on:
+  push:
+    paths:
+      - "config/pilot.yaml"
+      - ".github/workflows/pilot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        country: [cl, es]
+    concurrency:
+      group: pilot-${{ matrix.country }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install --no-cache-dir .
+      - name: Download
+        run: timeout 110m boards fetch-${{ matrix.country }} --budget 2500
+      - name: Commit progress
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet && exit 0
+          git commit -qm "Pilot data: ${{ matrix.country }}"
+          for i in 1 2 3 4 5; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep $((i * 10))
+          done
+          exit 1
