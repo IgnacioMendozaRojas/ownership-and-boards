@@ -136,7 +136,7 @@ def meta(r: requests.Response | None) -> dict:
     }
 
 
-def save(out: Path, name: str, r: requests.Response | None, limit: int = 8_000_000) -> None:
+def save(out: Path, name: str, r: requests.Response | None, limit: int = 40_000_000) -> None:
     if r is not None and r.content:
         (out / "raw").mkdir(parents=True, exist_ok=True)
         (out / "raw" / name).write_bytes(r.content[:limit])
@@ -297,18 +297,177 @@ def probe_es_iagc(f: Fetcher, out: Path, index: dict) -> dict:
     return res
 
 
+# --- round 2: history, coverage and the sources round 1 did not reach ---------------------------
+
+
+def first_table_rows(html: str, must: str) -> list[list[str]]:
+    """Rows of the first table whose text contains `must` (empty if none)."""
+    soup = BeautifulSoup(html, "lxml")
+    for t in soup.find_all("table"):
+        if must.lower() in t.get_text(" ").lower():
+            return [
+                [c.get_text(" ", strip=True) for c in tr.find_all(["td", "th"])]
+                for tr in t.find_all("tr")
+            ]
+    return []
+
+
+def cmf_post(f: Fetcher, rut: str, tab: int, data: dict) -> requests.Response | None:
+    base = {
+        "mercado": "V",
+        "rut": rut,
+        "grupo": "",
+        "tipoentidad": "RVEMI",
+        "row": "",
+        "vig": "VI",
+        "control": "svs",
+        "pestania": str(tab),
+    }
+    for attempt in range(3):
+        try:
+            r = f.s.post(cmf_url(rut, tab), data={**base, **data}, timeout=60)
+            time.sleep(f.pause)
+            r.encoding = r.encoding or r.apparent_encoding
+            return r
+        except requests.RequestException:
+            time.sleep(2 ** (attempt + 1))
+    return None
+
+
+def probe_cl_history(f: Fetcher, out: Path) -> dict:
+    """How far back the 12 largest shareholders, the shareholder ranges and the board go."""
+    rut = "90690000"
+    res: dict = {"source": "CMF history (Copec)", "shareholders": {}, "ranges": {}, "board": {}}
+    for year in (2025, 2020, 2015, 2010, 2005, 2000, 1995):
+        r = cmf_post(f, rut, 5, {"mm": "12", "aa": str(year)})
+        rows = first_table_rows(r.text, "% de propiedad") if r is not None else []
+        res["shareholders"][year] = {
+            "status": meta(r)["status"],
+            "rows": len(rows),
+            "top": rows[1:3],
+        }
+        r = cmf_post(f, rut, 21, {"mm": "12", "aa": str(year)})
+        txt = BeautifulSoup(r.text, "lxml").get_text(" ") if r is not None else ""
+        m = re.search(r"registros\s*:\s*([\d\.]+)", txt)
+        res["ranges"][year] = {"status": meta(r)["status"], "n_holders": m.group(1) if m else None}
+        notice(
+            "cl_history",
+            f"Copec 12/{year}: top-12 rows {len(rows) - 1 if rows else 0}, "
+            f"holders {res['ranges'][year]['n_holders']}",
+        )
+    for start, end in (("01/01/2020", "31/12/2025"), ("01/01/2010", "31/12/2012")):
+        r = cmf_post(f, rut, 46, {"txt_inicio": start, "txt_termino": end})
+        save(out, f"cl_board_{start[-4:]}.html", r)
+        rows = first_table_rows(r.text, "Cargo") if r is not None else []
+        res["board"][f"{start}-{end}"] = {"status": meta(r)["status"], "rows": rows[:30]}
+        notice("cl_history", f"Copec board {start}-{end}: {max(len(rows) - 1, 0)} rows, {rows[:2]}")
+    return res
+
+
+def probe_cl_coverage(f: Fetcher, out: Path) -> dict:
+    """Share of the CMF issuers list with a 12-largest-shareholders table and a board."""
+    url = f"{CMF}/consulta.php?mercado=V&Estado=VI&entidad=RVEMI"
+    r = f.get(url)
+    links = find_links(r.text, url, r"entidad\.php") if r is not None else []
+    ruts = sorted({m.group(1) for x in links if (m := re.search(r"rut=(\d+)", x["href"]))})
+    sample = ruts[:: max(1, len(ruts) // 25)][:25]
+    res: dict = {"source": "CMF coverage", "n_issuers": len(ruts), "sample": {}}
+    with_sh = with_board = 0
+    for rut in sample:
+        r5 = f.get(cmf_url(rut, 5))
+        r46 = f.get(cmf_url(rut, 46))
+        sh = first_table_rows(r5.text, "% de propiedad") if r5 is not None else []
+        bd = first_table_rows(r46.text, "Cargo") if r46 is not None else []
+        name = ""
+        if r5 is not None:
+            m = re.search(r"Raz.n Social:\s*</dt>\s*<dd>([^<]+)", r5.text)
+            name = m.group(1).strip() if m else ""
+        res["sample"][rut] = {"name": name, "top12": len(sh) - 1 if sh else 0, "board": len(bd) - 1}
+        with_sh += bool(sh)
+        with_board += len(bd) > 1
+    res["with_top12"], res["with_board"] = with_sh, with_board
+    notice(
+        "cl_coverage",
+        f"{len(ruts)} issuers listed; sample {len(sample)}: {with_sh} with top-12 table, "
+        f"{with_board} with board",
+    )
+    return res
+
+
+def probe_cl_pension_issuers(f: Fetcher, out: Path) -> dict:
+    """Pension fund portfolios by issuer (Superintendencia de Pensiones, section 11)."""
+    res: dict = {"source": "SP cartera por emisor", "periods": {}}
+    for period in ("202512", "201512", "200512"):
+        url = (
+            "https://www.spensiones.cl/apps/loadCarteras/loadCarInv.php?menu=sci&menuN1=estfinfp"
+            f"&menuN2=NOID&orden=11&periodo={period}&ext=.php"
+        )
+        r = f.get(url)
+        save(out, f"cl_sp11_{period}.html", r)
+        item = meta(r)
+        if r is not None and r.ok:
+            item["links"] = find_links(r.text, url, r"xls|html|zip|emisor")[:30]
+            item["tables"] = table_shapes(r.text)[:3]
+            xls = [x for x in item["links"] if "xls" in x["href"].lower()]
+            if xls:
+                rx = f.get(xls[0]["href"])
+                save(out, f"cl_sp11_{period}.xls", rx)
+                item["xls"] = meta(rx)
+        res["periods"][period] = item
+        notice(
+            "cl_pension_issuers",
+            f"{period}: HTTP {item['status']}, {len(item.get('links', []))} links, "
+            f"xls {item.get('xls', {}).get('status')} {item.get('xls', {}).get('type')}",
+        )
+    return res
+
+
+def probe_es_more(f: Fetcher, out: Path) -> dict:
+    """Inditex (no documents in round 1), pagination, remuneration reports and the universe."""
+    res: dict = {"source": "CNMV round 2", "firms": {}}
+    for nif in ("A15075062", "A08055741"):
+        url = f"{CNMV}?nif={nif}"
+        r = f.get(url)
+        save(out, f"es_index_{nif}.html", r)
+        item = meta(r)
+        if r is not None and r.ok:
+            item["docs"] = len(find_links(r.text, url, r"verdocumento"))
+            item["pager"] = find_links(r.text, url, r"page|pag=|__doPostBack")[:10]
+            item["iarc"] = find_links(r.text, url, r"remuner|IARC")[:10]
+            item["title"] = BeautifulSoup(r.text, "lxml").title.get_text(strip=True)[:120]
+        res["firms"][nif] = item
+        notice(
+            "es_more", f"{nif}: HTTP {item['status']}, docs {item.get('docs')}, {item.get('title')}"
+        )
+    for nif in ("A86212420",):
+        for tipo in ("IARC", "iarc"):
+            url = f"{CNMV}?nif={nif}&tipo={tipo}"
+            r = f.get(url)
+            save(out, f"es_iarc_{nif}_{tipo}.html", r)
+            docs = find_links(r.text, url, r"verdocumento") if r is not None else []
+            res[f"iarc_{tipo}"] = {**meta(r), "docs": [d["row"] for d in docs][:15]}
+            notice("es_more", f"IARC probe tipo={tipo}: {len(docs)} docs")
+    r = f.get("https://www.cnmv.es/DocPortal/Publicaciones/Informes/CNMV_IAGC_2025_DEF.pdf")
+    save(out, "es_cnmv_iagc_2025.pdf", r)
+    res["cnmv_report"] = meta(r)
+    notice("es_more", f"CNMV IAGC 2025 report: HTTP {res['cnmv_report']['status']}")
+    return res
+
+
 # --- runner -------------------------------------------------------------------------------------
+
+ROUND_2 = ["cl_history", "cl_coverage", "cl_pension_issuers", "es_more"]
 
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default="probes")
-    ap.add_argument("--only", nargs="*", help="cl_universe cl_tabs cl_pensions es_index es_iagc")
+    ap.add_argument("--only", nargs="*", help="probe names; default: the round-2 probes")
     args = ap.parse_args(argv)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     f = Fetcher()
-    wanted = set(args.only or ["cl_universe", "cl_tabs", "cl_pensions", "es_index", "es_iagc"])
+    wanted = set(args.only or ROUND_2)
     results: dict[str, dict] = {}
     steps = [
         ("cl_universe", lambda: probe_cl_universe(f, out)),
@@ -316,6 +475,10 @@ def main(argv: list[str] | None = None) -> int:
         ("cl_pensions", lambda: probe_cl_pensions(f, out)),
         ("es_index", lambda: probe_es_index(f, out)),
         ("es_iagc", lambda: probe_es_iagc(f, out, results.get("es_index", {}))),
+        ("cl_history", lambda: probe_cl_history(f, out)),
+        ("cl_coverage", lambda: probe_cl_coverage(f, out)),
+        ("cl_pension_issuers", lambda: probe_cl_pension_issuers(f, out)),
+        ("es_more", lambda: probe_es_more(f, out)),
     ]
     for name, run in steps:
         if name not in wanted:

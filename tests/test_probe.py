@@ -51,3 +51,12 @@ def test_pdf_markers_lists_pages():
     assert mk["A.2"] == [1]
     assert mk["C.1.2"] == [2]
     assert mk["A.6"] == []
+
+
+def test_first_table_rows_picks_the_matching_table():
+    from boards.probe import first_table_rows
+
+    rows = first_table_rows(PAGE, "% de propiedad")
+    assert rows[0][-1] == "% de propiedad"
+    assert rows[1][0] == "ANTARCHILE S.A."
+    assert first_table_rows(PAGE, "no such header") == []

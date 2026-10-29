@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       only:
-        description: "Probes to run (empty = all): cl_universe cl_tabs cl_pensions es_index es_iagc"
+        description: "Probes to run (empty = round 2): cl_universe cl_tabs cl_pensions es_index es_iagc cl_history cl_coverage cl_pension_issuers es_more"
         required: false
         default: ""
 
