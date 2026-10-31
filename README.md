@@ -42,7 +42,7 @@
 | Spain: independent directors, average share | 53% | 45% | +8 pp |
 | Spain: dominical directors, average share | 28% | 31% | -3 pp |
 
-*Baseline: Chile 2010, Spain 2015. Sample: 30 Chilean and 7 Spanish listed firms (pilot). Updated on 2026-10-29.*
+*Baseline: Chile 2010, Spain 2015. Sample: 30 Chilean and 7 Spanish listed firms (pilot). Updated on 2026-10-31.*
 <!-- latest:end -->
 
 ## The question and why it matters
