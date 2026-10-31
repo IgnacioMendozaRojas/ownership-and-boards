@@ -157,6 +157,14 @@ GROUP_PHRASE = {
 }
 
 
+def pay_ready(es: pd.DataFrame) -> bool:
+    """Draw the pay chart only when the latest year's pay is read for most firms and for more
+    than one constellation; otherwise a partial read would look like a finding."""
+    d = es[es["year"] == es["year"].max()]
+    ok = d.dropna(subset=["board_pay"])
+    return len(ok) >= 0.8 * len(d) and ok["constellation"].nunique() >= 2
+
+
 def fig_pay(es: pd.DataFrame) -> str:
     """Board pay per director by firm in the latest year with pay, grouped by constellation."""
     d = es.dropna(subset=["board_pay", "board_size"])
@@ -337,7 +345,7 @@ def main() -> dict:
         "concentration": fig_concentration(data["cl"]),
         "representation": fig_representation(data["es"]),
         "independence": fig_independence(data["es"]),
-        "pay": fig_pay(data["es"]) if data["es"]["board_pay"].notna().any() else "",
+        "pay": fig_pay(data["es"]) if pay_ready(data["es"]) else "",
     }
     doc = latest(data["cl"], data["es"])
     (ROOT / "latest.json").write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")

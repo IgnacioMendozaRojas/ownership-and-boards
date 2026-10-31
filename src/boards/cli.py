@@ -149,7 +149,15 @@ def fetch_es(web: Web, cfg: dict) -> None:
             path = cnmv.cache_path(CACHE, nif, e["year"])
             if cnmv.is_current(path):
                 continue
-            rec = cnmv.fetch_report(web, e)
+            try:
+                rec = cnmv.fetch_report(web, e)
+            except BudgetSpent:
+                raise
+            except Exception as err:  # noqa: BLE001
+                notice(
+                    "fetch_es", f"{name} {e['year']}: {type(err).__name__}: {err}"[:500], "warning"
+                )
+                continue
             cnmv.save_cache(path, {"nif": nif, "firm": name, **rec})
             got += 1
         notice("fetch_es", f"{name}: {len(entries)} reports listed, {got} new cached")
@@ -180,6 +188,9 @@ def main(argv: list[str] | None = None) -> int:
             fetch_es(web, cfg["spain"])
     except BudgetSpent as e:
         notice(args.command, f"stopped: {e}; the next run resumes", level="warning")
+    except Exception as e:  # noqa: BLE001
+        notice(args.command, f"stopped: {type(e).__name__}: {e}"[:600], level="error")
+        return 1
     notice(args.command, f"finished with {web.used} requests")
     return 0
 
