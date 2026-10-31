@@ -157,41 +157,69 @@ GROUP_PHRASE = {
 }
 
 
+PAY_YEARS = 5  # pay per director is a median over the last five years: one-off payments
+# (severance, long-term incentives) move a single year a lot
+
+
+def pay_window(es: pd.DataFrame) -> pd.DataFrame:
+    """One row per firm: median board pay per director over the last PAY_YEARS years, the
+    constellation it has most often in those years, and its usual number of executives."""
+    y1 = int(es["year"].max())
+    d = es[(es["year"] > y1 - PAY_YEARS) & es["board_pay"].notna() & es["board_size"].notna()]
+    d = d.assign(per_dir=d["board_pay"] / d["board_size"])
+    # constellation and largest owner from years whose holdings were read in full, if any
+    known = d[d["holders_complete"]]
+    base = known if not known.empty else d
+    mode = lambda g: g.mode().iloc[0] if g.notna().any() else None  # noqa: E731
+    group = base.groupby("firm").agg(
+        constellation=("constellation", mode), owner=("top1_type", mode)
+    )
+    rest = (
+        d[~d["firm"].isin(group.index)]
+        .groupby("firm")
+        .agg(constellation=("constellation", mode), owner=("top1_type", mode))
+    )
+    out = d.groupby("firm").agg(
+        per_dir=("per_dir", "median"), n_exec=("n_exec", "median"), years=("year", "nunique")
+    )
+    out = out.join(pd.concat([group, rest]))
+    return out[out["constellation"] != "Unknown"].dropna(subset=["constellation"]).reset_index()
+
+
 def pay_ready(es: pd.DataFrame) -> bool:
-    """Draw the pay chart only when the latest year's pay is read for most firms and for more
-    than one constellation; otherwise a partial read would look like a finding."""
-    d = es[es["year"] == es["year"].max()]
-    ok = d.dropna(subset=["board_pay"])
-    return len(ok) >= 0.8 * len(d) and ok["constellation"].nunique() >= 2
+    """Draw the pay chart only when pay is read for most firms and more than one constellation;
+    otherwise a partial read would look like a finding."""
+    w = pay_window(es)
+    return len(w) >= 0.8 * es["firm"].nunique() and w["constellation"].nunique() >= 2
 
 
 def fig_pay(es: pd.DataFrame) -> str:
-    """Board pay per director by firm in the latest year with pay, grouped by constellation."""
-    d = es.dropna(subset=["board_pay", "board_size"])
-    year = int(d["year"].max())
-    now = d[(d["year"] == year) & d["holders_complete"]].copy()
-    now["per_dir"] = now["board_pay"] / now["board_size"]
-    med = now.groupby("constellation")["per_dir"].median()
-    hi, lo = med.idxmax(), med.idxmin()
+    """Board pay per director by firm, five-year median, grouped by owner constellation."""
+    w = pay_window(es).sort_values("per_dir", ascending=False)
+    y1 = int(es["year"].max())
+    top, low = w.iloc[0], w.iloc[-1]
+    hi = w.groupby("constellation")["per_dir"].median().idxmax()
     title = (
-        f"Spain: board pay per director, €{med[hi]:,.0f}k in {GROUP_PHRASE[hi]} "
-        f"and €{med[lo]:,.0f}k in {GROUP_PHRASE[lo]}"
+        f"Spain: board pay per director ranges from €{low['per_dir']:,.0f}k at {low['firm']} "
+        f"to €{top['per_dir']:,.0f}k at {top['firm']}"
     )
     sub = (
-        f"Median board pay per director, thousand euros, {len(now)} IBEX firms in {year}; "
-        "the board's pay includes executive directors"
+        f"Thousand euros, median {y1 - PAY_YEARS + 1}-{y1}, {len(w)} IBEX firms; in colour: "
+        f"{GROUP_PHRASE[hi]}. Pay includes executive directors"
     )
-    now = now.sort_values("per_dir", ascending=False)
-    labels = [f"{r.firm} ({r.constellation.lower()})" for r in now.itertuples()]
+    labels = [
+        f"{r.firm} ({r.constellation.lower()}; {OWNER_LABEL.get(r.owner, r.owner).lower()})"
+        for r in w.itertuples()
+    ]
     for c in charts(title, sub, ES_SOURCE):
         c.hbars(
             labels,
-            list(now["per_dir"]),
+            list(w["per_dir"]),
             fmt="€{:,.0f}k",
-            highlight={lab for lab, g in zip(labels, now["constellation"], strict=True) if g == hi},
+            highlight={lab for lab, g in zip(labels, w["constellation"], strict=True) if g == hi},
             sort=False,
         )
-        c.fig.subplots_adjust(left=0.42, right=0.9)
+        c.fig.subplots_adjust(left=0.5, right=0.9)
         c.save(FIG, "pay")
     return title
 

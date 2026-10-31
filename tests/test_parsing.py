@@ -111,3 +111,15 @@ def test_cache_version(tmp_path):
     assert not cnmv.is_current(p)
     cnmv.save_cache(p, {"pages": [], "v": cnmv.CACHE_VERSION})
     assert cnmv.is_current(p)
+
+
+def test_pay_without_separator_and_section_numbers():
+    from boards import iagc
+
+    t = (
+        "Remuneración devengada en el ejercicio a favor del consejo de administración (miles de "
+        "euros) 3544\nRemuneración total alta dirección (en miles de euros)\nC.1.15 Indique si\n"
+    )
+    page = {"text": t, "words": []}
+    r = iagc.parse_report({"nif": "X", "firm": "F", "year": 2025, "pages": [page]})
+    assert r["board_pay"] == 3544 and r["mgmt_pay"] is None

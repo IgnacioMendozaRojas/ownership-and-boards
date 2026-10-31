@@ -32,10 +32,10 @@ COUNTS = {
 PAY = {
     "board_pay": r"Remuneraci[oó]n\s+(?:devengada\s+en\s+el\s+ejercicio\s+a\s+favor\s+)?del\s+"
     r"consejo\s+de\s+administraci[oó]n\s*\((?:en\s+)?miles\s+de\s+euros\)[^\d\n]{0,40}"
-    r"\n?[^\d\n]{0,20}(\d{1,3}(?:\.\d{3})*(?:,\d+)?|\d+(?:,\d+)?)",
+    r"\n?[^\d\n]{0,20}(?<![\w.,])(\d+(?:\.\d{3})*(?:,\d+)?)(?![\w.])",
     "mgmt_pay": r"Remuneraci[oó]n\s+total\s+(?:de\s+la\s+)?alta\s+direcci[oó]n\s*"
     r"\((?:en\s+)?miles\s+de\s+euros\)[^\d\n]{0,40}\n?[^\d\n]{0,20}"
-    r"(\d{1,3}(?:\.\d{3})*(?:,\d+)?|\d+(?:,\d+)?)",
+    r"(?<![\w.,])(\d+(?:\.\d{3})*(?:,\d+)?)(?![\w.])",
 }
 
 

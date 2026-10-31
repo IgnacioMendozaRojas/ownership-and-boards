@@ -12,6 +12,7 @@
 - **Chilean ownership became more concentrated and less contestable.** Across 30 large listed firms, the largest shareholder's median stake rose from 35% in 2010 to 40% in 2025, the second holder's stake fell from 0.42 to 0.33 of the first's, and the median number of shareholders fell by 30% (1,528 to 1,063). In 2025, 16 of the 30 firms had no blockholder (5% or more) other than corporate vehicles.
 - **Controllers reach the Spanish board through different doors.** Fundación Mapfre holds 70% of Mapfre's votes but 1 of its 15 seats as a dominical director (the board has 5 executives); the Entrecanales family holds 56% of Acciona through two companies and 2 of 12 dominical seats. Where no owner controls, the owners split the board: Naturgy's six significant holders (none above 26%) held 11 of its 15 seats in 2025. Counting only dominical directors understates a controller's presence when it governs through executives.
 - **Independence rose, and a disclosure meant to measure representation is reported inconsistently.** Independents went from 45% to 53% of the board in seven IBEX firms (2015-2025). The share of voting rights "represented on the board", reported since 2021, moved at Acciona from 1% (2021-22) to 56% (2023) with the same owners, so it cannot be used without checking it against the shareholdings.
+- **Board pay follows the owner's identity at least as much as control.** Pay per director (median of 2021-2025, executives included) ranges from €36k at Aena, controlled by the State, to €1.28 million at Telefónica, whose board is shared by several significant owners. Among controlled firms, the foundation-controlled Mapfre pays €773k and the family-controlled Acciona €625k, twenty times Aena. Firms with several significant owners pay a median €703k, against €625k for controlled firms.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/figures/representation-dark.png">
@@ -24,7 +25,7 @@
 |---|---|
 | Find which public sources can be downloaded in a structured way | Five rounds of cheap probes in GitHub Actions, results read as annotations; the probes were removed once the sources were settled (see the commit history) |
 | Build a firm-year panel from regulatory filings | CMF company pages: 12 largest shareholders, number of shareholders and director spells with start and end dates ([`cmf.py`](src/boards/cmf.py)); CNMV governance reports cached as text and word positions ([`cnmv.py`](src/boards/cnmv.py)) |
-| Read tables out of PDF reports | Board counts from the model's summary lines; significant holdings read from word positions, with name lines balanced around each row of percentages and aligned with known holders ([`iagc.py`](src/boards/iagc.py)) |
+| Read tables out of PDF reports | Board counts and the board's and senior management's pay from the model's summary lines; significant holdings read from word positions, with name lines balanced around each row of percentages and aligned with known holders ([`iagc.py`](src/boards/iagc.py)) |
 | Classify owners transparently | Ordered rules on holder names, tested on real names, plus a reviewed list of significant holders with family vehicles grouped by family ([`owners.py`](src/boards/owners.py), [`holders_es.yaml`](config/holders_es.yaml)) |
 | Measure ownership constellations and boards | Concentration, contestability, stakes by owner type, blockholder combinations, board composition and seats shared with listed shareholders ([`chile.py`](src/boards/chile.py), [`report.py`](src/boards/report.py)) |
 | Keep it current without manual work | The download resumes where it stopped, then the panels, figures and the block below are rebuilt |
@@ -53,7 +54,7 @@ Chile and Spain share concentrated ownership and the same central conflict, betw
 
 > **How do ownership constellations translate into board seats, in two concentrated-ownership markets with different channels of minority voice?**
 
-Three hypotheses guide the next step, not yet tested: the controller's over-representation grows with concentration; a second large owner of a different type reduces it and makes room for independents; and the type of minority owner changes the channel (independents for pension funds and institutions, dominical seats for families and corporations).
+Four hypotheses guide the next step, not yet tested: the controller's over-representation grows with concentration; a second large owner of a different type reduces it and makes room for independents; the type of minority owner changes the channel (independents for pension funds and institutions, dominical seats for families and corporations); and board pay depends on who the owners are, not only on how concentrated they are (State owners hold pay down; boards shared by several significant owners pay more than controlled ones).
 
 ## Method
 
@@ -61,22 +62,24 @@ Three hypotheses guide the next step, not yet tested: the controller's over-repr
 
 **Owner types.** Corporate, family (Spain, from a reviewed list), individual, State, foreign State, pension fund (AFP), institutional investor, bank, foundation or association, and, in the Chilean top-12 tables, custodian and broker accounts (shares held for clients, which hide the final owner).
 
-**Measures.** Largest holder's stake; top-3; Herfindahl index over the 12 largest; contestability (2nd/1st); stakes by type; the constellation (types holding 5% or more); board size and shares of executive, dominical and independent directors; seats held by directors who also sit on the board of a listed shareholder.
+**Measures.** Board pay (the board's total pay for the year, executives included) and senior management pay, in thousand euros, and pay per director as a five-year median, because one-off payments (severance, long-term incentives) move single years a lot; the owner constellation of each Spanish firm-year: controlled (one owner with 50% or more), several significant owners, or one minority blockholder. Largest holder's stake; top-3; Herfindahl index over the 12 largest; contestability (2nd/1st); stakes by type; the constellation (types holding 5% or more); board size and shares of executive, dominical and independent directors; seats held by directors who also sit on the board of a listed shareholder.
 
 ## Validation
 
 - Figures checked against the filings: ENAIRE's 51% of Aena and Copec's 60.82% held by AntarChile, both as reported.
 - 95% of the Spanish significant holders are matched to a reviewed holder; the rest keep their raw name and are flagged in [`holders_es.csv`](data/processed/holders_es.csv). A firm-year counts as read in full only when every row of its holdings table is matched; the representation chart shows only those, and its subtitle names any firm left out (Grifols in 2025, whose table runs over a page break and misses a holding reported in a footnote).
+- Board pay is read in 76 of 77 Spanish reports (Repsol 2025 prints the figure outside the model's table); the extreme years are checked against the reports, such as Telefónica's €91.7 million in 2025 and Acciona's €56.3 million in 2020, which include one-off payments.
 - The CMF director register is incomplete for some firm-years (LATAM, Enel Chile and SQM list fewer directors than they have); board measures use only firm-years with at least 5 directors (`board_complete`).
 - 35 offline tests cover the parsers and the owner rules; `ruff` and `pytest` run on every push.
 
-**Limitations of the pilot.** Small samples (30 and 7 firms). In Chile, who each director represents is not declared, so representation must be inferred (shared directors, AFP-elected directors); custodian accounts hide part of the ownership. Five Spanish firms are missing because their CNMV identifier did not resolve. Holder names in the most irregular Spanish tables (Naturgy 2019-2024) are partly unmatched.
+**Limitations of the pilot.** Small samples (30 and 7 firms). In Chile, who each director represents is not declared, so representation must be inferred (shared directors, AFP-elected directors); custodian accounts hide part of the ownership. Five Spanish firms (Iberdrola, ACS, Endesa, Enagás and Redeia) are missing: for them the CNMV's governance page opens on the remuneration report and lists no governance reports, so they need another route to the documents. The board's pay includes executive directors, so it mixes board fees with executive pay; the annual remuneration reports (IARC) would separate them. Holder names in the most irregular Spanish tables (Naturgy 2019-2024) are partly unmatched.
 
 ## Next steps
 
 1. All Chilean issuers' boards (about 340 firms) to trace group networks, and the directors elected with pension-fund votes.
 2. The full list of Spanish listed firms, and executives linked to the controller counted with the dominical directors.
-3. A firm-level measure of over-appointment for both countries and the tests of the three hypotheses.
+3. A firm-level measure of over-appointment for both countries and the tests of the four hypotheses.
+4. Directors' pay split into fees and executive pay from the annual remuneration reports, and the Chilean directors' fees from the annual reports.
 
 ## Automation
 
