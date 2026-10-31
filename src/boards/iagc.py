@@ -27,6 +27,23 @@ COUNTS = {
     "n_dom": r"N[uú]mero total de consejeros dominicales\s+(\d+)",
     "n_ind": r"N[uú]mero total de consejeros independientes\s+(\d+)",
 }
+# Pay in thousand euros. The board's figure includes executive directors' pay as directors and
+# as executives; senior management excludes executive directors.
+PAY = {
+    "board_pay": r"Remuneraci[oó]n\s+(?:devengada\s+en\s+el\s+ejercicio\s+a\s+favor\s+)?del\s+"
+    r"consejo\s+de\s+administraci[oó]n\s*\((?:en\s+)?miles\s+de\s+euros\)[^\d\n]{0,40}"
+    r"\n?[^\d\n]{0,20}(\d{1,3}(?:\.\d{3})*(?:,\d+)?|\d+(?:,\d+)?)",
+    "mgmt_pay": r"Remuneraci[oó]n\s+total\s+(?:de\s+la\s+)?alta\s+direcci[oó]n\s*"
+    r"\((?:en\s+)?miles\s+de\s+euros\)[^\d\n]{0,40}\n?[^\d\n]{0,20}"
+    r"(\d{1,3}(?:\.\d{3})*(?:,\d+)?|\d+(?:,\d+)?)",
+}
+
+
+def thousands(token: str) -> float:
+    """'12.345' -> 12345.0; '1.234,5' -> 1234.5 (Spanish separators)."""
+    return float(token.replace(".", "").replace(",", "."))
+
+
 VOTES_ON_BOARD = r"derechos de voto representados en el consejo de administraci[oó]n\s+([\d\.,]+)"
 NUM = re.compile(r"^\d{1,3}(\.\d{3})*(,\d+)?%?$|^\d+(,\d+)?%?$")
 HEADER = re.compile(
@@ -287,6 +304,9 @@ def parse_report(rec: dict) -> dict:
         row["n_other"] = row["board_size"] - known
     m = re.search(VOTES_ON_BOARD, text, re.I)
     row["votes_on_board"] = pct(m.group(1)) if m else None
+    for key, rx in PAY.items():
+        m = re.search(rx, text, re.I)
+        row[key] = thousands(m.group(1)) if m else None
     row["holders"] = parse_a2(rec["pages"])
     return row
 

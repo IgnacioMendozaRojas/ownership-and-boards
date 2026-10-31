@@ -83,3 +83,31 @@ def test_clean_top12_drops_share_counts_in_the_pct_column():
     c = chile.constellations(t).iloc[0]
     assert c["top1_pct"] == 50.1 and c["pct_pension_fund"] == 1.2
     assert c["constellation"] == "corporate"
+
+
+def test_pay_new_and_old_models():
+    from boards import iagc
+
+    new = (
+        "C.1.13 Indique el importe de los siguientes conceptos relativos a la remuneración global\n"
+        "del consejo de administración:\n"
+        "Remuneración devengada en el ejercicio a favor del consejo de administración (miles de\n"
+        "euros) 12.345\n"
+        "C.1.14 ...\nRemuneración total alta dirección (en miles de euros) 7.890,5\n"
+    )
+    old = "Remuneración del consejo de administración (miles de euros) 4.100\n"
+    rec = {"nif": "X", "firm": "F", "year": 2016, "pages": [{"text": old, "words": []}]}
+    assert iagc.parse_report(rec)["board_pay"] == 4100
+    rec = {"nif": "X", "firm": "F", "year": 2023, "pages": [{"text": new, "words": []}]}
+    r = iagc.parse_report(rec)
+    assert r["board_pay"] == 12345 and r["mgmt_pay"] == 7890.5
+
+
+def test_cache_version(tmp_path):
+    from boards import cnmv
+
+    p = tmp_path / "x.json.gz"
+    cnmv.save_cache(p, {"pages": []})
+    assert not cnmv.is_current(p)
+    cnmv.save_cache(p, {"pages": [], "v": cnmv.CACHE_VERSION})
+    assert cnmv.is_current(p)

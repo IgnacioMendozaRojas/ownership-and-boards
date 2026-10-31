@@ -123,6 +123,19 @@ def fetch_es(web: Web, cfg: dict) -> None:
     rows = []
     for nif, name in cfg["firms"].items():
         entries = cnmv.index(web, nif)
+        if not entries:
+            # say what the page holds, to see why no report was found
+            html = web.get(f"{cnmv.INDEX}?nif={nif}").text
+            links = len(re.findall(r"verdocumento", html))
+            title = re.search(r"<title>(.*?)</title>", html, re.S)
+            body = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html))
+            i = body.find("Ejercicio")
+            notice(
+                "fetch_es",
+                f"{name} ({nif}): {links} document links; title "
+                f"{title.group(1).strip()[:60] if title else ''}; text {body[max(i, 0) : i + 300]}",
+                level="warning",
+            )
         rows += [
             {"nif": nif, "firm": name, **{k: e[k] for k in ("year", "registered")}} for e in entries
         ]
@@ -134,7 +147,7 @@ def fetch_es(web: Web, cfg: dict) -> None:
             if not y0 <= e["year"] <= y1:
                 continue
             path = cnmv.cache_path(CACHE, nif, e["year"])
-            if path.exists():
+            if cnmv.is_current(path):
                 continue
             rec = cnmv.fetch_report(web, e)
             cnmv.save_cache(path, {"nif": nif, "firm": name, **rec})

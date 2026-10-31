@@ -17,12 +17,16 @@ from bs4 import BeautifulSoup
 from .web import Web
 
 INDEX = "https://www.cnmv.es/portal/consultas/ee/informaciongobcorp"
-# Pages worth keeping: the model's ownership (A) and board (C.1) sections
+# Pages worth keeping: the model's ownership (A) and board (C.1) sections, and the board's and
+# senior management's pay (C.1.13-C.1.14 since 2018; C.1.15-C.1.16 before)
 KEEP = re.compile(
     r"A\.2\b|A\.3\b|C\.1\.2\b|C\.1\.3\b|consejeros? (externos )?dominicales|"
-    r"derechos de voto representados|N[uú]mero total de consejeros",
+    r"derechos de voto representados|N[uú]mero total de consejeros|"
+    r"Remuneraci[oó]n[^\n]{0,90}\((en )?miles de euros|remuneraci[oó]n global del consejo",
     re.I,
 )
+# Version of what a cached report holds; older caches are downloaded again
+CACHE_VERSION = 2
 MAX_PAGES = 60
 
 
@@ -74,6 +78,11 @@ def pdf_pages(content: bytes) -> list[dict]:
     return keep
 
 
+def is_current(path: Path) -> bool:
+    """A cached report is reused only if it was saved with the current page selection."""
+    return path.exists() and load_cache(path).get("v", 1) >= CACHE_VERSION
+
+
 def cache_path(root: Path, nif: str, year: int) -> Path:
     return root / f"{nif}_{year}.json.gz"
 
@@ -92,5 +101,10 @@ def load_cache(path: Path) -> dict:
 def fetch_report(web: Web, entry: dict) -> dict:
     r = web.get(entry["url"])
     if r.content[:4] != b"%PDF":
-        return {**entry, "error": f"not a PDF ({r.headers.get('Content-Type')})", "pages": []}
-    return {**entry, "pages": pdf_pages(r.content)}
+        return {
+            **entry,
+            "error": f"not a PDF ({r.headers.get('Content-Type')})",
+            "pages": [],
+            "v": 0,
+        }
+    return {**entry, "pages": pdf_pages(r.content), "v": CACHE_VERSION}

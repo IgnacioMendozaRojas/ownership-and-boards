@@ -43,6 +43,8 @@ def build() -> dict[str, pd.DataFrame]:
     rep["dom_share"] = rep["n_dom"] / rep["board_size"]
     rep["ind_share"] = rep["n_ind"] / rep["board_size"]
     rep["exec_share"] = rep["n_exec"] / rep["board_size"]
+    rep["constellation"] = rep.apply(constellation, axis=1)
+    rep["pay_per_director"] = rep["board_pay"] / rep["board_size"]
     cl["board_complete"] = cl["board_size"] >= MIN_BOARD
     OUT.mkdir(parents=True, exist_ok=True)
     cl.to_csv(OUT / "panel_cl.csv", index=False)
@@ -133,6 +135,56 @@ def fig_representation(es: pd.DataFrame) -> str:
         ax.set_ylabel("Dominical directors / board", color=c.t["muted"], fontsize=9)
         c.legend(loc="upper left")
         c.save(FIG, "representation")
+    return title
+
+
+def constellation(row) -> str:
+    """Owner constellation of a Spanish firm-year, from its significant holdings (3% or more)."""
+    if pd.isna(row["top1_pct"]):
+        return "Unknown"
+    if row["top1_pct"] >= 50:
+        return "Controlled"
+    if row["n_sig"] >= 2:
+        return "Several significant owners"
+    return "One minority blockholder"
+
+
+GROUP_PHRASE = {
+    "Controlled": "controlled firms",
+    "Several significant owners": "firms with several owners",
+    "One minority blockholder": "firms with one blockholder",
+    "Unknown": "firms with unread holdings",
+}
+
+
+def fig_pay(es: pd.DataFrame) -> str:
+    """Board pay per director by firm in the latest year with pay, grouped by constellation."""
+    d = es.dropna(subset=["board_pay", "board_size"])
+    year = int(d["year"].max())
+    now = d[(d["year"] == year) & d["holders_complete"]].copy()
+    now["per_dir"] = now["board_pay"] / now["board_size"]
+    med = now.groupby("constellation")["per_dir"].median()
+    hi, lo = med.idxmax(), med.idxmin()
+    title = (
+        f"Spain: board pay per director, €{med[hi]:,.0f}k in {GROUP_PHRASE[hi]} "
+        f"and €{med[lo]:,.0f}k in {GROUP_PHRASE[lo]}"
+    )
+    sub = (
+        f"Median board pay per director, thousand euros, {len(now)} IBEX firms in {year}; "
+        "the board's pay includes executive directors"
+    )
+    now = now.sort_values("per_dir", ascending=False)
+    labels = [f"{r.firm} ({r.constellation.lower()})" for r in now.itertuples()]
+    for c in charts(title, sub, ES_SOURCE):
+        c.hbars(
+            labels,
+            list(now["per_dir"]),
+            fmt="€{:,.0f}k",
+            highlight={lab for lab, g in zip(labels, now["constellation"], strict=True) if g == hi},
+            sort=False,
+        )
+        c.fig.subplots_adjust(left=0.42, right=0.9)
+        c.save(FIG, "pay")
     return title
 
 
@@ -285,11 +337,19 @@ def main() -> dict:
         "concentration": fig_concentration(data["cl"]),
         "representation": fig_representation(data["es"]),
         "independence": fig_independence(data["es"]),
+        "pay": fig_pay(data["es"]) if data["es"]["board_pay"].notna().any() else "",
     }
     doc = latest(data["cl"], data["es"])
     (ROOT / "latest.json").write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
     write_readme(doc)
     for k, t in titles.items():
         print(f"::notice title=figure {k}::{t}")
+    es = data["es"]
+    got = es["board_pay"].notna()
+    missing = ", ".join(f"{r.firm} {r.year}" for r in es[~got].itertuples())
+    print(
+        f"::notice title=pay::board pay read in {got.sum()} of {len(es)} reports; "
+        f"missing: {missing}"
+    )
     print(f"::notice title=latest::{doc['headline']}")
     return {"titles": titles, "latest": doc, "picture": picture}
