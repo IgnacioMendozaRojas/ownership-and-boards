@@ -70,3 +70,13 @@ def test_year_range_latest_is_the_last_full_year():
 
     assert year_range({"years": [2010, "latest"]}, date(2027, 4, 15)) == (2010, 2026)
     assert year_range({"years": [2015, 2025]}) == (2015, 2025)
+
+
+def test_reports_must_belong_to_the_issuer():
+    own = [{"company": "IBERDROLA, S.A."}, {"company": "IBERDROLA, S.A."}]
+    other = [{"company": "ABANCA CORPORACION BANCARIA, S.A."}, {"company": "IBERDROLA, S.A."}]
+    assert cnmv.belongs(own, ["Iberdrola"])
+    assert not cnmv.belongs(other, ["Iberdrola"])
+    assert not cnmv.belongs([], ["Iberdrola"])
+    assert cnmv.belongs([{"company": "ENAGAS, S.A."}], ["Enagás"])
+    assert cnmv.belongs([{"company": "RED ELECTRICA CORPORACION"}], ["Redeia", "Red Eléctrica"])

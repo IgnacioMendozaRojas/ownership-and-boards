@@ -54,10 +54,28 @@ def parse_index(html: str, base: str = INDEX) -> list[dict]:
     return out
 
 
-def index(web: Web, nif: str, isin: str | None = None) -> list[dict]:
-    """The issuer's reports, found by NIF or, for issuers the NIF route misses, by ISIN."""
-    query = f"isin={isin}" if isin else f"nif={nif}"
-    return parse_index(web.get(f"{INDEX}?{query}").text)
+def plain(text: str) -> str:
+    import unicodedata
+
+    t = unicodedata.normalize("NFKD", text.upper())
+    return "".join(c for c in t if c.isalnum() or c == " ")
+
+
+def belongs(entries: list[dict], names: list[str]) -> bool:
+    """True when every report on the page is the issuer's own. An unknown identifier returns a
+    generic page that lists other entities' reports, which must not be cached as the issuer's."""
+    keys = [plain(n).split()[0] for n in names if n]
+    return bool(entries) and all(any(k in plain(e["company"]) for k in keys) for e in entries)
+
+
+def index(web: Web, nif: str, names: list[str]) -> list[dict]:
+    """The issuer's reports. The CNMV records some issuers with a hyphen in the NIF
+    ('A-48010615'), so that form is tried when the plain one does not return the issuer."""
+    for key in (nif, f"{nif[0]}-{nif[1:]}"):
+        entries = parse_index(web.get(f"{INDEX}?nif={key}").text)
+        if belongs(entries, names):
+            return entries
+    return []
 
 
 def pdf_pages(content: bytes) -> list[dict]:
