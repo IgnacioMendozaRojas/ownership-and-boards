@@ -1,4 +1,4 @@
-"""One-off probe: why the CNMV governance page lists no reports for some issuers."""
+"""One-off probe: the identifiers the CNMV uses for five issuers its NIF route does not find."""
 
 import re
 
@@ -8,39 +8,51 @@ UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
     "Chrome/128.0 Safari/537.36"
 )
-URLS = {
-    "gobcorp": "https://www.cnmv.es/portal/consultas/ee/informaciongobcorp?nif={nif}",
-    "aspx": "https://www.cnmv.es/Portal/Consultas/EE/InformacionGobCorp.aspx?nif={nif}",
-    "entidad": "https://www.cnmv.es/portal/consultas/datosentidad.aspx?nif={nif}",
+S = requests.Session()
+S.headers["User-Agent"] = UA
+ISIN = {
+    "Iberdrola": "ES0144580Y14",
+    "Endesa": "ES0130670112",
+    "ACS": "ES0167050915",
+    "Enagás": "ES0130960018",
+    "Redeia": "ES0173093024",
 }
+NAMES = r"IBERDROLA|ENDESA|ACS,? ACTIVIDADES|ACTIVIDADES DE CONSTRUC|ENAG|REDEIA|RED EL[EÉ]CTRICA"
 
 
 def note(title, msg, level="notice"):
     print(f"::{level} title={title}::{msg[:950]}", flush=True)
 
 
-for nif, name in (("A48010615", "Iberdrola"), ("A28023430", "Endesa"), ("A78374725", "Repsol")):
-    for kind, url in URLS.items():
-        s = requests.Session()
-        s.headers["User-Agent"] = UA
-        try:
-            r = s.get(url.format(nif=nif), timeout=60)
-        except requests.RequestException as e:
-            note(f"{name} {kind}", f"error {type(e).__name__}: {e}", "warning")
+def get(url):
+    try:
+        return S.get(url, timeout=90)
+    except requests.RequestException as e:
+        note("error", f"{url}: {type(e).__name__}", "warning")
+        return None
+
+
+# 1. the issuer list: links next to the five names
+for tipo in (0, 1):
+    r = get(f"https://www.cnmv.es/portal/consultas/listadoentidad.aspx?id=1&tipoent={tipo}")
+    if r is None:
+        continue
+    hits = re.findall(
+        r'<a[^>]+href="([^"]+)"[^>]*>\s*([^<]*(?:' + NAMES + r")[^<]*)</a>", r.text, re.I
+    )
+    note(
+        f"list tipoent={tipo}",
+        f"{len(r.text)} bytes; " + " | ".join(f"{t.strip()} -> {h}" for h, t in hits[:12]),
+    )
+
+# 2. the governance page by ISIN
+for name, isin in ISIN.items():
+    for param in ("isin", "nif"):
+        r = get(f"https://www.cnmv.es/portal/consultas/ee/informaciongobcorp?{param}={isin}")
+        if r is None:
             continue
-        h = r.text
-        title = re.search(r"<title>(.*?)</title>", h, re.S)
-        docs = len(re.findall(r"verdocumento", h))
-        grids = sorted(set(re.findall(r"wGrid\w+", h)))
-        years = re.findall(r">\s*(20\d\d)\s*<", h)[:12]
-        links = [
-            x
-            for x in dict.fromkeys(re.findall(r'href="([^"]+)"', h))
-            if re.search(r"gobcorp|remuner|nif=|verdocumento", x, re.I) and "lang=" not in x
-        ]
+        title = re.search(r"<title>(.*?)</title>", r.text, re.S)
+        docs = len(re.findall(r"verdocumento", r.text))
         note(
-            f"{name} {kind}",
-            f"HTTP {r.status_code} {r.url} | {len(h)} bytes | title "
-            f"{(title.group(1).strip() if title else '')[:90]} | docs {docs} | grids {grids} | "
-            f"years {years} | links {links[:6]}",
+            f"{name} {param}", f"{(title.group(1).strip() if title else '')[60:140]} | docs {docs}"
         )
