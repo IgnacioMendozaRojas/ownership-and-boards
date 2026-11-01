@@ -33,17 +33,17 @@
 ## Latest reading
 
 <!-- latest:start -->
-**Latest reading: 2025.** In 2025 the largest shareholder of a large Chilean listed firm held a median 40% (against 35% in 2010); in Spain, independents held 53% of board seats and dominicales 28% in 2025.
+**Latest reading: 2025.** In 2025 the largest shareholder of a large Chilean listed firm held a median 40% (against 35% in 2010); in Spain, independents held 57% of board seats and dominicales 25% in 2025.
 
 | Indicator | Latest | Baseline | Change |
 |---|---:|---:|---:|
 | Chile: largest holder's stake, median | 39.5% | 34.6% | +4.9 pp |
 | Chile: 2nd / 1st holder, median | 0.33 | 0.42 | -0.09 |
 | Chile: number of shareholders, median | 1,062 | 1,528 | -465 |
-| Spain: independent directors, average share | 53% | 45% | +8 pp |
-| Spain: dominical directors, average share | 28% | 31% | -3 pp |
+| Spain: independent directors, average share | 57% | 48% | +9 pp |
+| Spain: dominical directors, average share | 25% | 28% | -4 pp |
 
-*Baseline: Chile 2010, Spain 2015. Sample: 30 Chilean and 7 Spanish listed firms (pilot). Updated on 2026-11-01.*
+*Baseline: Chile 2010, Spain 2015. Sample: 30 Chilean and 12 Spanish listed firms (pilot). Updated on 2026-11-01.*
 <!-- latest:end -->
 
 ## The question and why it matters
