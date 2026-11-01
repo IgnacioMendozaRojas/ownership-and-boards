@@ -45,6 +45,8 @@ def build() -> dict[str, pd.DataFrame]:
     rep["exec_share"] = rep["n_exec"] / rep["board_size"]
     rep["constellation"] = rep.apply(constellation, axis=1)
     rep["pay_per_director"] = rep["board_pay"] / rep["board_size"]
+    # seats on the controller's side when it governs through executives as well as dominicales
+    rep["linked_share"] = (rep["n_dom"] + rep["n_exec"]) / rep["board_size"]
     cl["board_complete"] = cl["board_size"] >= MIN_BOARD
     OUT.mkdir(parents=True, exist_ok=True)
     cl.to_csv(OUT / "panel_cl.csv", index=False)
@@ -157,6 +159,19 @@ GROUP_PHRASE = {
 
 PAY_YEARS = 5  # pay per director is a median over the last five years: one-off payments
 # (severance, long-term incentives) move a single year a lot
+
+
+def stake_vs_seats(es: pd.DataFrame) -> dict:
+    """How far the largest owner's stake predicts its side's seats, in the latest year with the
+    holdings read in full: correlations with dominical and with dominical-plus-executive seats."""
+    y = int(es["year"].max())
+    d = es[(es["year"] == y) & es["holders_complete"]].dropna(subset=["top1_pct", "dom_share"])
+    return {
+        "year": y,
+        "n": len(d),
+        "corr_dom": float(d["top1_pct"].corr(d["dom_share"])),
+        "corr_linked": float(d["top1_pct"].corr(d["linked_share"])),
+    }
 
 
 def pay_window(es: pd.DataFrame) -> pd.DataFrame:
@@ -384,6 +399,12 @@ def main() -> dict:
     print(
         f"::notice title=pay::board pay read in {got.sum()} of {len(es)} reports; "
         f"missing: {missing}"
+    )
+    sv = stake_vs_seats(data["es"])
+    print(
+        f"::notice title=stake vs seats::{sv['n']} firms in {sv['year']}: correlation of the "
+        f"largest stake with dominical seats {sv['corr_dom']:.2f}, with dominical and "
+        f"executive seats {sv['corr_linked']:.2f}"
     )
     print(f"::notice title=latest::{doc['headline']}")
     return {"titles": titles, "latest": doc, "picture": picture}

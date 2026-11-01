@@ -10,9 +10,9 @@
 ## Results
 
 - **Chilean ownership became more concentrated and less contestable.** Across 30 large listed firms, the largest shareholder's median stake rose from 35% in 2010 to 40% in 2025, the second holder's stake fell from 0.42 to 0.33 of the first's, and the median number of shareholders fell by 30% (1,528 to 1,063). In 2025, 16 of the 30 firms had no blockholder (5% or more) other than corporate vehicles.
-- **Controllers reach the Spanish board through different doors.** Fundación Mapfre holds 70% of Mapfre's votes but 1 of its 15 seats as a dominical director (the board has 5 executives), while Enel, with the same 70% of Endesa, holds 6 of 14; the Entrecanales family holds 56% of Acciona through two companies and 2 of 12 dominical seats. Where no owner controls, the owners split the board: Naturgy's six significant holders (none above 26%) held 11 of its 15 seats in 2025. Counting only dominical directors understates a controller's presence when it governs through executives.
+- **In Spain, the largest owner's stake barely predicts its board seats; the channel and the combination of owners do.** Across nine IBEX firms in 2025, the correlation between the largest owner's voting stake and the share of seats held by dominical directors is 0.07 (0.25 counting executive directors too). Fundación Mapfre and Enel both hold 70% of their company's votes: the foundation has 1 of Mapfre's 15 seats as a dominical director, Enel 6 of Endesa's 14. Counting the executives, through whom Mapfre's foundation governs, the gap closes to 40% against 50%. Where no owner controls, the owners split the board: at Naturgy, six significant holders, none above 26%, held 11 of 15 seats in 2025. Nine firms are a pilot, not a test; the test is the next step.
 - **Independence rose, and a disclosure meant to measure representation is reported inconsistently.** Independents went from 48% to 57% of the board in twelve IBEX firms (2015-2025). The share of voting rights "represented on the board", reported since 2021, moved at Acciona from 1% (2021-22) to 56% (2023) with the same owners, so it cannot be used without checking it against the shareholdings.
-- **Board pay follows the owner's identity at least as much as control.** Pay per director (median of 2021-2025, executives included) ranges from €36k at Aena to €1.71 million at Iberdrola. The two firms whose largest owner is the Spanish State pay least: Aena (€36k) and Redeia (€269k). Among controlled firms, the foundation-controlled Mapfre pays €773k and the family-controlled Acciona €625k. Across the twelve, firms with several significant owners pay a median €703k per director, against €486k for controlled firms.
+- **Board pay may follow the owner's identity (descriptive, not adjusted for firm size).** Pay per director (median of 2021-2025, executives included) ranges from €36k at Aena to €1.71 million at Iberdrola. The two firms whose largest owner is the Spanish State pay least: Aena (€36k) and Redeia (€269k). Among controlled firms, the foundation-controlled Mapfre pays €773k and the family-controlled Acciona €625k. Across the twelve, firms with several significant owners pay a median €703k per director, against €486k for controlled firms.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/figures/representation-dark.png">
@@ -54,7 +54,7 @@ Chile and Spain share concentrated ownership and the same central conflict, betw
 
 > **How do ownership constellations translate into board seats, in two concentrated-ownership markets with different channels of minority voice?**
 
-Four hypotheses guide the next step, not yet tested: the controller's over-representation grows with concentration; a second large owner of a different type reduces it and makes room for independents; the type of minority owner changes the channel (independents for pension funds and institutions, dominical seats for families and corporations); and board pay depends on who the owners are, not only on how concentrated they are (State owners hold pay down; boards shared by several significant owners pay more than controlled ones).
+Four hypotheses guide the next step, not yet tested. The central one is that board seats follow the combination of owners and the channel they use, not the largest stake alone; with it: the controller's over-representation grows with concentration; a second large owner of a different type reduces it and makes room for independents; the type of minority owner changes the channel (independents for pension funds and institutions, dominical seats for families and corporations); and board pay depends on who the owners are, not only on how concentrated they are (State owners hold pay down; boards shared by several significant owners pay more than controlled ones).
 
 ## Method
 
@@ -62,7 +62,7 @@ Four hypotheses guide the next step, not yet tested: the controller's over-repre
 
 **Owner types.** Corporate, family (Spain, from a reviewed list), individual, State, foreign State, pension fund (AFP), institutional investor, bank, foundation or association, and, in the Chilean top-12 tables, custodian and broker accounts (shares held for clients, which hide the final owner).
 
-**Measures.** Board pay (the board's total pay for the year, executives included) and senior management pay, in thousand euros, and pay per director as a five-year median, because one-off payments (severance, long-term incentives) move single years a lot; the owner constellation of each Spanish firm-year: controlled (one owner with 50% or more), several significant owners, or one minority blockholder. Largest holder's stake; top-3; Herfindahl index over the 12 largest; contestability (2nd/1st); stakes by type; the constellation (types holding 5% or more); board size and shares of executive, dominical and independent directors; seats held by directors who also sit on the board of a listed shareholder.
+**Measures.** Seats on the controller's side: dominical directors, and dominical plus executive directors, as shares of the board. Board pay (the board's total pay for the year, executives included) and senior management pay, in thousand euros, and pay per director as a five-year median, because one-off payments (severance, long-term incentives) move single years a lot; the owner constellation of each Spanish firm-year: controlled (one owner with 50% or more), several significant owners, or one minority blockholder. Largest holder's stake; top-3; Herfindahl index over the 12 largest; contestability (2nd/1st); stakes by type; the constellation (types holding 5% or more); board size and shares of executive, dominical and independent directors; seats held by directors who also sit on the board of a listed shareholder.
 
 ## Validation
 
@@ -78,7 +78,7 @@ Four hypotheses guide the next step, not yet tested: the controller's over-repre
 
 1. All Chilean issuers' boards (about 340 firms) to trace group networks, and the directors elected with pension-fund votes.
 2. The full list of Spanish listed firms, and executives linked to the controller counted with the dominical directors.
-3. A firm-level measure of over-appointment for both countries and the tests of the four hypotheses.
+3. The test: a firm-year panel of Spanish and Chilean listed firms, with the share of seats on the controller's side (dominical and executive directors) regressed on the largest stake, the presence and type of a second large owner and their interaction, with firm and year effects; Chile's cumulative voting and the pension funds' coordinated vote give a second institutional setting.
 4. Directors' pay split into fees and executive pay from the annual remuneration reports, and the Chilean directors' fees from the annual reports.
 
 ## Automation
