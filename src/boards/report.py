@@ -87,11 +87,9 @@ def fig_representation(es: pd.DataFrame) -> str:
         f"Spain: {top['firm']}'s largest owner holds {top['top1_pct']:.0f}% of votes "
         f"but {top['dom_share']:.0%} of seats as dominicales"
     )
-    sub = (
-        f"{len(last)} of {len(now)} IBEX firms in {year}: largest owner's votes vs. dominical seats"
-    )
+    sub = f"{len(last)} of {len(now)} IBEX firms in {year}"
     if left_out:
-        sub += f" ({', '.join(left_out)} left out: holdings table not read in full)"
+        sub += f"; holdings not read in full: {', '.join(left_out)}"
     for c in charts(title, sub, ES_SOURCE, size=(9, 5.2)):
         ax = c.ax
         ax.plot([0, 1], [0, 1], color=c.t["muted"], linewidth=0.8, linestyle=(0, (2, 2)))

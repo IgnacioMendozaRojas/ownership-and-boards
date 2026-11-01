@@ -13,6 +13,7 @@ on:
     paths:
       - "config/pilot.yaml"
       - "config/holders_es.yaml"
+      - "src/boards/report.py"
       - ".github/workflows/pilot.yml"
   workflow_dispatch:
 
