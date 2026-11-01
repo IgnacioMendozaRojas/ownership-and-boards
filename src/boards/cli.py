@@ -122,7 +122,7 @@ def fetch_es(web: Web, cfg: dict) -> None:
     y0, y1 = year_range(cfg)
     rows = []
     for nif, name in cfg["firms"].items():
-        entries = cnmv.index(web, nif)
+        entries = cnmv.index(web, nif, cfg.get("isin", {}).get(nif))
         if not entries:
             # say what the page holds, to see why no report was found
             html = web.get(f"{cnmv.INDEX}?nif={nif}").text

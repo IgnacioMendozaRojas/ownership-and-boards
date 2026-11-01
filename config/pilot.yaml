@@ -50,3 +50,11 @@ spain:
     A58389123: Grifols
     A28294726: Enagás
     A78003662: Redeia
+  # The CNMV's governance page does not find these issuers by NIF, but does by the ISIN of their
+  # shares; for them the ISIN is used.
+  isin:
+    A48010615: ES0144580Y14
+    A28004885: ES0167050915
+    A28023430: ES0130670112
+    A28294726: ES0130960018
+    A78003662: ES0173093024

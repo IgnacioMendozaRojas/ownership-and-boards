@@ -54,8 +54,10 @@ def parse_index(html: str, base: str = INDEX) -> list[dict]:
     return out
 
 
-def index(web: Web, nif: str) -> list[dict]:
-    return parse_index(web.get(f"{INDEX}?nif={nif}").text)
+def index(web: Web, nif: str, isin: str | None = None) -> list[dict]:
+    """The issuer's reports, found by NIF or, for issuers the NIF route misses, by ISIN."""
+    query = f"isin={isin}" if isin else f"nif={nif}"
+    return parse_index(web.get(f"{INDEX}?{query}").text)
 
 
 def pdf_pages(content: bytes) -> list[dict]:

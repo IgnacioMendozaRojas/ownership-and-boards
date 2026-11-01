@@ -121,3 +121,24 @@
 - name: Núria Roura (Grifols family)
   type: family
   pattern: "N.RIA ROURA"
+- name: Enel
+  type: corporate
+  pattern: "\\bENEL\\b"
+- name: Qatar Investment Authority
+  type: state_foreign
+  pattern: "QATAR"
+- name: Kutxabank
+  type: bank
+  pattern: "KUTXABANK"
+- name: State Street
+  type: institutional
+  pattern: "STATE STREET"
+- name: Vanguard
+  type: institutional
+  pattern: "VANGUARD"
+- name: Rosán Inversiones (Pérez family)
+  type: family
+  pattern: "ROS[AÁ]N INVERSIONES|FLORENTINO P[EÉ]REZ"
+- name: Pontegadea (Ortega family)
+  type: family
+  pattern: "PONTEGADEA|AMANCIO ORTEGA"
