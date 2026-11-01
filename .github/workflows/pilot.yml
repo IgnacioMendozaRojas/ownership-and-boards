@@ -12,6 +12,7 @@ on:
   push:
     paths:
       - "config/pilot.yaml"
+      - "config/holders_es.yaml"
       - ".github/workflows/pilot.yml"
   workflow_dispatch:
 
