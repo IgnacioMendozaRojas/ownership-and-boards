@@ -122,7 +122,17 @@ def fetch_es(web: Web, cfg: dict) -> None:
     y0, y1 = year_range(cfg)
     rows = []
     for nif, name in cfg["firms"].items():
-        entries = cnmv.index(web, nif, [name, *cfg.get("aliases", {}).get(nif, [])])
+        try:
+            entries = cnmv.index(web, nif, [name, *cfg.get("aliases", {}).get(nif, [])])
+        except BudgetSpent:
+            raise
+        except Exception as err:  # noqa: BLE001
+            notice(
+                "fetch_es",
+                f"{name}: index failed, {type(err).__name__}; retried next run",
+                "warning",
+            )
+            continue
         rows += [
             {"nif": nif, "firm": name, **{k: e[k] for k in ("year", "registered")}} for e in entries
         ]
