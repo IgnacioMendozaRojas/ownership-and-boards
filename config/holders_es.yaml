@@ -142,3 +142,18 @@
 - name: Pontegadea (Ortega family)
   type: family
   pattern: "PONTEGADEA|AMANCIO ORTEGA"
+- name: Mubadala (Partler Participaciones)
+  type: state_foreign
+  pattern: "MUBADALA|PARTLER"
+- name: Bank of America
+  type: bank
+  pattern: "BANK OF AMERICA"
+- name: Société Générale
+  type: bank
+  pattern: "SOCIETE G[EÉ]N[EÉ]RALE"
+- name: Alberto Cortina Alcocer
+  type: individual
+  pattern: "CORTINA ALCOCER"
+- name: Alberto Alcocer Torra
+  type: individual
+  pattern: "ALCOCER TORRA"

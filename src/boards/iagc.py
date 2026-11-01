@@ -44,6 +44,8 @@ def thousands(token: str) -> float:
     return float(token.replace(".", "").replace(",", "."))
 
 
+DISPERSED = r"(?i)inversores particulares|accionistas minoritarios|free float|capital flotante"
+
 VOTES_ON_BOARD = r"derechos de voto representados en el consejo de administraci[oó]n\s+([\d\.,]+)"
 NUM = re.compile(r"^\d{1,3}(\.\d{3})*(,\d+)?%?$|^\d+(,\d+)?%?$")
 HEADER = re.compile(
@@ -325,6 +327,9 @@ def build(cache: Path) -> dict[str, pd.DataFrame]:
     rep["firm"] = rep["nif"].map(names).fillna(rep["firm"])
     if not hold.empty:
         hold["firm"] = hold["nif"].map(names).fillna(hold["firm"])
+    if not hold.empty:
+        # a holding of 0% is a misread cell, and dispersed capital is not a holder
+        hold = hold[(hold["pct"] > 0) & ~hold["holder"].str.contains(DISPERSED, regex=True)]
     if not hold.empty:
         guess = hold["holder"].map(lambda n: owner_type(n, country="es"))
         hold["matched"] = hold["type"].notna()
