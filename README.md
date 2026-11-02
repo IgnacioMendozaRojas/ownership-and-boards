@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/IgnacioMendozaRojas/ownership-and-boards/actions/workflows/ci.yml/badge.svg)](https://github.com/IgnacioMendozaRojas/ownership-and-boards/actions/workflows/ci.yml)
 [![Pilot data](https://github.com/IgnacioMendozaRojas/ownership-and-boards/actions/workflows/pilot.yml/badge.svg)](https://github.com/IgnacioMendozaRojas/ownership-and-boards/actions/workflows/pilot.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23893517.svg)](https://doi.org/10.5281/zenodo.23893517)
 
 **Corporate governance research: who gets a seat on the board?** How combinations of owners (business groups, families, foundations, the State, pension funds and institutional investors) translate into board seats in two markets with concentrated ownership, Chile and Spain, built from the regulators' public filings.
 
