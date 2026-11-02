@@ -1,0 +1,20 @@
+name: Release
+
+# Publishes a GitHub release for each version tag (v1.0.0, ...). Zenodo archives every release
+# of this repository and gives it a DOI; the metadata come from .zenodo.json.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes
