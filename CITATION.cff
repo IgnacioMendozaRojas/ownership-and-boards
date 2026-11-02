@@ -8,5 +8,7 @@ authors:
     orcid: "https://orcid.org/0009-0002-9957-0224"
 repository-code: "https://github.com/IgnacioMendozaRojas/ownership-and-boards"
 url: "https://ignaciomendozarojas.github.io/#c-research"
+version: "1.0.0"
+doi: "10.5281/zenodo.23893516"
 license: MIT
 keywords: [corporate governance, ownership structure, boards of directors, blockholders, Chile, Spain]
