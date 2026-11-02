@@ -1,10 +1,13 @@
 name: Release
 
-# Publishes a GitHub release for each version tag (v1.0.0, ...). Zenodo archives every release
-# of this repository and gives it a DOI; the metadata come from .zenodo.json.
+# Publishes a GitHub release whenever VERSION changes on main (and creates its tag). Zenodo
+# archives every release of this repository and gives it a DOI; the metadata come from
+# .zenodo.json and CITATION.cff.
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
+    paths: ["VERSION"]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -17,4 +20,11 @@ jobs:
       - name: Create the release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes
+        run: |
+          v="v$(tr -d '[:space:]' < VERSION)"
+          if gh release view "$v" >/dev/null 2>&1; then
+            echo "::notice title=release::$v already exists"
+            exit 0
+          fi
+          gh release create "$v" --target "$GITHUB_SHA" --title "$v" --generate-notes
+          echo "::notice title=release::published $v"
