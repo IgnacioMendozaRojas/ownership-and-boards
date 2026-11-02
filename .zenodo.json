@@ -1,7 +1,7 @@
 {
-  "title": "Ownership and boards: ownership constellations and board composition in Chile and Spain",
+  "title": "Ownership and Board Composition in Chilean and Spanish Listed Firms: A Panel Dataset from Regulatory Filings",
   "description": "Firm-year panel of Chilean and Spanish listed firms built from CMF and CNMV filings: owners classified by type, board composition and board pay, with the code that builds it.",
-  "upload_type": "software",
+  "upload_type": "dataset",
   "license": "MIT",
   "creators": [
     {

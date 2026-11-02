@@ -1,6 +1,7 @@
 cff-version: 1.2.0
+type: dataset
 message: "If you use this software or its data, please cite it as below."
-title: "Ownership and boards: ownership constellations and board composition in Chile and Spain"
+title: "Ownership and Board Composition in Chilean and Spanish Listed Firms: A Panel Dataset from Regulatory Filings"
 abstract: "Firm-year panel of Chilean and Spanish listed firms built from CMF and CNMV filings: owners classified by type, board composition and board pay, with the code that builds it."
 authors:
   - family-names: "Mendoza Rojas"
@@ -8,7 +9,7 @@ authors:
     orcid: "https://orcid.org/0009-0002-9957-0224"
 repository-code: "https://github.com/IgnacioMendozaRojas/ownership-and-boards"
 url: "https://ignaciomendozarojas.github.io/#c-research"
-version: "1.0.0"
+version: "1.0.1"
 doi: "10.5281/zenodo.23893516"
 license: MIT
 keywords: [corporate governance, ownership structure, boards of directors, blockholders, Chile, Spain]
